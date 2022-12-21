@@ -53,66 +53,90 @@ component {
         return userQuery
     }
 
-    // Updates a row with a given email
-    public void function updateEmployee( 
-        required string firstName,
-        required string lastName,
-        required string address,
-        required string email,
-        required string phoneNumber
-    ) {
-        var updateQuery = new Query();
-		updateQuery.setDatasource("CFSQLTraining");
-		updateQuery.setName("updateEmployee");
-        updateQuery.setSQL(
+    // Gets the row with the highest id so we can generate a new ID
+    public query function getHighestID () {
+        var getID = new Query();
+		getID.setDatasource("CFSQLTraining");
+		getID.setName("getID");
+        getID.setSQL(
             " 
-            UPDATE [CFSQLTraining].[dbo].[Employees]
-            SET 
-                firstname = ( :firstName ),
-                lastname =  ( :lastName ),
-                address =  ( :address ) ,
-                phone =  ( :phoneNumber )
-            WHERE email = ( :email )
+            SELECT TOP 1 
+                [id],
+                [firstname],
+                [lastname],
+                [email],
+                [username],
+                [password],
+                [timezone]
+            FROM [CFSQLTraining].[dbo].[fizzleusers]
+            ORDER BY [id] DESC;
             " 
         )
-        updateQuery.addParam( name="firstName", value=ARGUMENTS.firstName)
-        updateQuery.addParam( name="lastName", value=ARGUMENTS.lastName)
-        updateQuery.addParam( name="address", value=ARGUMENTS.address)
-        updateQuery.addParam( name="email", value=ARGUMENTS.email)
-        updateQuery.addParam( name="phoneNumber", value=ARGUMENTS.phoneNumber)
-		updateQuery.execute()
-    }
-    
-    // Reads all employee data
-    public query function readEmployeeData() {
-		var query = new Query();;
-		query.setDatasource("CFSQLTraining");
-		query.setName("getEmployees");
-		var result = query.execute(
-			sql = 
-                "
-				SELECT
-					[firstname],
-					[lastname],
-					[address],
-					[email],
-					[phone]
-				FROM [CFSQLTraining].[dbo].[Employees]
-			    "
-		)
-        return result.getResult()
+        var idQuery = getID.execute().getResult()
+        writeDump(idQuery)
+        return idQuery
     }
 
+    // Updates a row with a given email
+    // public void function updateEmployee( 
+    //     required string firstName,
+    //     required string lastName,
+    //     required string address,
+    //     required string email,
+    //     required string phoneNumber
+    // ) {
+    //     var updateQuery = new Query();
+	// 	updateQuery.setDatasource("CFSQLTraining");
+	// 	updateQuery.setName("updateEmployee");
+    //     updateQuery.setSQL(
+    //         " 
+    //         UPDATE [CFSQLTraining].[dbo].[Employees]
+    //         SET 
+    //             firstname = ( :firstName ),
+    //             lastname =  ( :lastName ),
+    //             address =  ( :address ) ,
+    //             phone =  ( :phoneNumber )
+    //         WHERE email = ( :email )
+    //         " 
+    //     )
+    //     updateQuery.addParam( name="firstName", value=ARGUMENTS.firstName)
+    //     updateQuery.addParam( name="lastName", value=ARGUMENTS.lastName)
+    //     updateQuery.addParam( name="address", value=ARGUMENTS.address)
+    //     updateQuery.addParam( name="email", value=ARGUMENTS.email)
+    //     updateQuery.addParam( name="phoneNumber", value=ARGUMENTS.phoneNumber)
+	// 	updateQuery.execute()
+    // }
+    
+    // Reads all employee data
+    // public query function readEmployeeData() {
+	// 	var query = new Query();;
+	// 	query.setDatasource("CFSQLTraining");
+	// 	query.setName("getEmployees");
+	// 	var result = query.execute(
+	// 		sql = 
+    //             "
+	// 			SELECT
+	// 				[firstname],
+	// 				[lastname],
+	// 				[address],
+	// 				[email],
+	// 				[phone]
+	// 			FROM [CFSQLTraining].[dbo].[Employees]
+	// 		    "
+	// 	)
+    //     return result.getResult()
+    // }
+
     // Deletes a row with the given email
-    public void function deleteEmployee( required string email ) {
-		var deleteQuery = new Query();;
-		deleteQuery.setDatasource("CFSQLTraining");
-		deleteQuery.setName("deleteEmployee");
-        deleteQuery.setSQL(
-            " DELETE FROM [CFSQLTraining].[dbo].[Employees]
-            WHERE email = ( :email ) " 
-        )
-        deleteQuery.addParam( name="email", value=ARGUMENTS.email)
-		deleteQuery.execute()
-    }
+    // public void function deleteEmployee( required string email ) {
+	// 	var deleteQuery = new Query();;
+	// 	deleteQuery.setDatasource("CFSQLTraining");
+	// 	deleteQuery.setName("deleteEmployee");
+    //     deleteQuery.setSQL(
+    //         " DELETE FROM [CFSQLTraining].[dbo].[Employees]
+    //         WHERE email = ( :email ) " 
+    //     )
+    //     deleteQuery.addParam( name="email", value=ARGUMENTS.email)
+	// 	deleteQuery.execute()
+    // }
 }

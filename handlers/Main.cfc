@@ -31,13 +31,16 @@ component extends="coldbox.system.EventHandler" {
 
 		// if a user with that email was not found, create the user
 		if (queryRecordCount(userQuery) == 0) {
-			
-			// Get a struct from the query record set
-			var userData = QueryGetRow(userQuery, 1)
 
+			// Get the highest id that already exists ( assuming at least one entry exists )
+			// TODO: We would need to check that the record set has at least one row
+			var highestIDquery = userModel.getHighestID()
+			var highestID = QueryGetRow(highestIDquery, 1)
+			var id = LSParseNumber(highestID['id']) + 1
+			
 			// Create the user
 			userModel.createUser(
-				id = '9996',
+				id = id,
 				firstname = rc.firstname,
 				lastname = rc.lastname,
 				username = rc.username,
