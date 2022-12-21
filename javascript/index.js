@@ -17,9 +17,14 @@ $("#signUp_heading").on("click", () => {
 })
 
 // Sign in / sign up form submissions
-$("#signIn_form").on("submit", () => {
+$("#signIn_form").on("submit", (event) => {
+
+    // TODO: not sure why things are getting submnitted twice when I dont have these?
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
     $.ajax({
-        url: "http://127.0.0.1:55968/signIn",
+        url: "http://127.0.0.1:55968/Main/signIn",
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
@@ -27,10 +32,15 @@ $("#signIn_form").on("submit", () => {
             "password": $("#signIn_form_password").val(),
         }),
         success: function() { alert( "Sign in successful" ) },
-        error: function() { 
-            alert( "Could not sign in. Please check credentials." ) 
-            // TODO: handle 403 user not found and 400 password doesnt match errors
-        }
+        error: function(jqXHR) {
+
+            // TODO: Is this the correct way to handle error responses?
+            if (jqXHR.status == 403) {
+                alert( "A user with this email does not exist." ) 
+            } else if (jqXHR.status == 404) {
+                alert("This email was found but the password did not match.")
+            }
+        },
     })
 })
 $("#signUp_form").on("submit", (event) => {
@@ -53,6 +63,8 @@ $("#signUp_form").on("submit", (event) => {
         }),
         success: function() { alert( "User was created. Please sign in." ) },
         error: function(jqXHR) {
+
+            // TODO: Is this the correct way to handle error responses?
             if (jqXHR.status == 403) {
                 alert( "A user with this email already exists! " ) 
             }

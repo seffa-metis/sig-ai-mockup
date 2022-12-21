@@ -15,10 +15,27 @@ component extends="coldbox.system.EventHandler" {
 	*/
 	function signIn (event, rc, prc ) {
 		// read the db for a user with the given rc.email
-		// --	if it doesnt exist, return 403 not found
-		// if it exists, check the queried pw against the rc.password
-		// --	if it doesnt match, return 400 error
-		// if they match set view to be main home page
+		var userQuery = userModel.getUser( rc.email )
+
+		// if a user with that email was not found, return 403
+		if (queryRecordCount(userQuery) == 0) {
+    		// TODO: How do i return 403 user already exists
+			event.renderData( type="json", data={"Error": "User with this email was not found."}, statusCode=403 );
+
+
+		// A user with that email was found
+        } else {
+			var userData = QueryGetRow(userQuery, 1)
+			// check if the passwords match
+			if (rc.password != userData['password']) {
+				event.renderData( type="json", data={"Error": "Password does not match this email."}, statusCode=404 );
+			} else {
+				// SIGN IN SUCCESSFULL
+				// else we relocate to the home page
+				writeOutput('Sign in successful')
+			}
+        }
+		event.setView("main/index");
 	}
 
 	/**
