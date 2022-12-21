@@ -1,0 +1,11 @@
+{
+    "app":{
+        "cfengine":"adobe@2018"
+    },
+    "name":"fizzle",
+    "web":{
+        "rewrites":{
+            "enable":"true"
+        }
+    }
+}
