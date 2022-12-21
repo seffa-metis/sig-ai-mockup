@@ -1,12 +1,31 @@
 component extends="coldbox.system.EventHandler" {
 
 	/**
-	 * Default Action
+	 * Sign in / sign up page
 	 */
 	function index( event, rc, prc ) {
-		prc.welcomeMessage = "Welcome to ColdBox!";
-		event.setView( "main/index" );
+		event.setView("main/index");
 	}
+
+	/**
+	 * Sign in request
+	 */
+	 function signIn (event, rc, prc ) {
+		// read the db for a user with the given rc.email
+		// --	if it doesnt exist, return 403 not found
+		// if it exists, check the queried pw against the rc.password
+		// --	if it doesnt match, return 400 error
+		// if they match set view to be main home page
+	 }
+
+	/**
+	 * Create User request
+	 */
+	 function createUser (event, rc, prc ) {
+		// read the db for a user with the given rc.email
+		// --	if it exist, return 403 user already exists
+		// if it doesnt exists, save the rc.email, rc.password, and rc.username to the user table
+	 }
 
 	/**
 	 * Produce some restfulf data
@@ -33,6 +52,7 @@ component extends="coldbox.system.EventHandler" {
 	}
 
 	function onRequestStart( event, rc, prc ) {
+		// TODO: Authentication here
 	}
 
 	function onRequestEnd( event, rc, prc ) {

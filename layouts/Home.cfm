@@ -5,8 +5,8 @@
 	<!--- Metatags --->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Fizzle App">
-    <meta name="author" content="Mr. Fizzle">
+	<meta name="description" content="ColdBox Application Template">
+    <meta name="author" content="Ortus Solutions, Corp">
 
 	<!---Base URL --->
 	<base href="#event.getHTMLBaseURL()#" />
@@ -19,7 +19,7 @@
 	</style>
 
 	<!--- Title --->
-	<title>Fizzle</title>
+	<title>Welcome to Coldbox!</title>
 </head>
 <body
 	data-spy="scroll"
@@ -28,7 +28,35 @@
 	style="padding-top: 60px"
 	class="d-flex flex-column h-100"
 >
+	<!---Top NavBar --->
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+			<div class="container-fluid">
+				<!---Brand --->
+				<a class="navbar-brand" href="#event.buildLink( 'main' )#">
+					Fizzle
+				</a>
 
+				<!--- Mobile Toggler --->
+				<button
+					class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="##navbarSupportedContent"
+					aria-controls="navbarSupportedContent"
+					aria-expanded="false"
+					aria-label="Toggle navigation"
+				>
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+					
+				</div>
+			</div>
+		</nav>
+	</header>
 
 	<!---Container And Views --->
 	<main class="flex-shrink-0">
