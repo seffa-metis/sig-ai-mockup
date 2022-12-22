@@ -31,7 +31,12 @@ $("#signIn_form").on("submit", (event) => {
             "email": $("#signIn_form_email").val(),
             "password": $("#signIn_form_password").val(),
         }),
-        success: function() { alert( "Sign in successful" ) },
+        success: function() { 
+            // Redirect to the home page
+            alert( "Sign in successful" ) 
+            const url = "http://127.0.0.1:55968/HomePage/index"
+            $(location).attr('href',url);
+        },
         error: function(jqXHR) {
 
             // TODO: Is this the correct way to handle error responses?

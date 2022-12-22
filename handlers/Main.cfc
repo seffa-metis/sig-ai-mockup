@@ -21,7 +21,7 @@ component extends="coldbox.system.EventHandler" {
 		if (queryRecordCount(userQuery) == 0) {
     		// TODO: How do i return 403 user already exists
 			event.renderData( type="json", data={"Error": "User with this email was not found."}, statusCode=403 );
-
+			event.setView("main/index");
 
 		// A user with that email was found
         } else {
@@ -31,11 +31,15 @@ component extends="coldbox.system.EventHandler" {
 				event.renderData( type="json", data={"Error": "Password does not match this email."}, statusCode=404 );
 			} else {
 				// SIGN IN SUCCESSFULL
+				// TODO: WHY DOESNT THIS WORK????
 				// else we relocate to the home page
 				writeOutput('Sign in successful')
+				// event.setView( "main/index2" );
+				event.setView("homePage/index");
+				// event.nolayout()
+				// relocate( "HomePage" );
 			}
         }
-		event.setView("main/index");
 	}
 
 	/**
@@ -68,8 +72,6 @@ component extends="coldbox.system.EventHandler" {
 
 		// A user with that email already exists
         } else {
-
-        	// TODO: How do i return 403 user already exists
 			event.renderData( type="json", data={"Error": "User already exist"}, statusCode=403 );
         }
 		event.setView("main/index");
