@@ -15,7 +15,7 @@ component extends="coldbox.system.EventHandler" {
 	*/
 	function signIn (event, rc, prc ) {
 		// read the db for a user with the given rc.email
-		var userQuery = userModel.getUser( rc.email )
+		var userQuery = userModel.getUserByEmail( rc.email )
 
 		// if a user with that email was not found, return 403
 		if (queryRecordCount(userQuery) == 0) {
@@ -26,18 +26,27 @@ component extends="coldbox.system.EventHandler" {
 		// A user with that email was found
         } else {
 			var userData = QueryGetRow(userQuery, 1)
+			// save the data for use in the home page
+			// TODO: This doesnt persist if i go to a new handler?
+			prc.userData = "user data here!"
+			// writeDump(
+			// 	var = prc.userData,
+			// 	output = "console"
+			// );
+
 			// check if the passwords match
 			if (rc.password != userData['password']) {
 				event.renderData( type="json", data={"Error": "Password does not match this email."}, statusCode=404 );
 			} else {
 				// SIGN IN SUCCESSFULL
-				// TODO: WHY DOESNT THIS WORK????
 				// else we relocate to the home page
-				writeOutput('Sign in successful')
 				// event.setView( "main/index2" );
-				event.setView("homePage/index");
+				// TODO: WHY DOESNT THIS DO ANYTHING????
+				// event.setView("homePage/index");
+				// jquery 
 				// event.nolayout()
 				// relocate( "HomePage" );
+				return userData["id"]
 			}
         }
 	}
@@ -48,7 +57,7 @@ component extends="coldbox.system.EventHandler" {
 	function createUser ( event, rc, prc ) {
 
 		// check if a user with that email exists
-		var userQuery = userModel.getUser( rc.email )
+		var userQuery = userModel.getUserByEmail( rc.email )
 
 		// if a user with that email was not found, create the user
 		if (queryRecordCount(userQuery) == 0) {

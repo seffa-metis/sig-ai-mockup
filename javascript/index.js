@@ -31,10 +31,10 @@ $("#signIn_form").on("submit", (event) => {
             "email": $("#signIn_form_email").val(),
             "password": $("#signIn_form_password").val(),
         }),
-        success: function() { 
+        success: function( userID ) { 
             // Redirect to the home page
-            alert( "Sign in successful" ) 
-            const url = "http://127.0.0.1:55968/HomePage/index"
+            alert( "Sign in successful for user with id " + userID ) 
+            const url = "http://127.0.0.1:55968/HomePage/index?userID=" + userID
             $(location).attr('href',url);
         },
         error: function(jqXHR) {

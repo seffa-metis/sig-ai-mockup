@@ -3,15 +3,33 @@
  */
 component{
 
-	// OPTIONAL HANDLER PROPERTIES
-	this.prehandler_only 	= "";
-	this.prehandler_except 	= "";
-	this.posthandler_only 	= "";
-	this.posthandler_except = "";
-	this.aroundHandler_only = "";
-	this.aroundHandler_except = "";
-	// REST Allowed HTTP Methods Ex: this.allowedMethods = {delete='POST,DELETE',index='GET'}
-	this.allowedMethods = {};
+	// Inject the model
+	property name="userModel" inject="UserModel";
+
+
+	/**
+	 * index
+	 */
+	function index( event, rc, prc ){
+		
+		// lets param a userId in the rc
+		event.paramValue("userID", "")
+
+		// get the users data
+		
+		// TODO: why cant it find this model?
+		// var userQuery = userModel.getUserByID( id=rc.userID )
+		var userQuery = wirebox.getInstance( "userModel" ).getUserByID( id=rc.userID );
+		if (queryRecordCount(userQuery) == 0) {
+    		// TODO: 500 server error
+		} else {
+			// save the data to be displayed on the home screen
+			// TODO: in prod we shouldnt be saving or returning passwords
+			prc.userData = QueryGetRow(userQuery, 1)
+			event.setView( "HomePage/index" );
+			event.setLayout("Home")
+		}		
+	}
 
 	/**
 	IMPLICIT FUNCTIONS: Uncomment to use
@@ -31,14 +49,5 @@ component{
 	function onInvalidHTTPMethod( event, rc, prc, faultAction, eventArguments ){
 	}
 	*/
-
-	/**
-	 * index
-	 */
-	function index( event, rc, prc ){
-		event.setView( "HomePage/index" );
-	}
-
-
 
 }

@@ -30,11 +30,11 @@ component {
     };
 
     // Get a user with a given email
-    public query function getUser ( required string email ) {
-        var getUser = new Query();
-		getUser.setDatasource("CFSQLTraining");
-		getUser.setName("getUser");
-        getUser.setSQL(
+    public query function getUserByEmail ( required string email ) {
+        var getUserByEmail = new Query();
+		getUserByEmail.setDatasource("CFSQLTraining");
+		getUserByEmail.setName("getUserByEmail");
+        getUserByEmail.setSQL(
             " 
             SELECT 
                 [id],
@@ -48,9 +48,32 @@ component {
             WHERE [email] = :email ;
             " 
         )
-        getUser.addParam( name="email", value=ARGUMENTS.email)
-        var userQuery = getUser.execute().getResult()
-        return userQuery
+        getUserByEmail.addParam( name="email", value=ARGUMENTS.email)
+        var userQueryEmail = getUserByEmail.execute().getResult()
+        return userQueryEmail
+    }
+
+    // Get a user with a given id
+    public query function getUserByID ( required string id ) {
+        var getUserByID = new Query();
+		getUserByID.setDatasource("CFSQLTraining");
+		getUserByID.setName("getUserByID");
+        getUserByID.setSQL(
+            " 
+            SELECT 
+                [id],
+                [firstname],
+                [lastname],
+                [email],
+                [username],
+                [timezone]
+            FROM [CFSQLTraining].[dbo].[fizzleusers]
+            WHERE [id] = :id ;
+            " 
+        )
+        getUserByID.addParam( name="id", value=ARGUMENTS.id)
+        var userQueryID = getUserByID.execute().getResult()
+        return userQueryID
     }
 
     // Gets the row with the highest id so we can generate a new ID
