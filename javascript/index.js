@@ -77,7 +77,17 @@ $("#signUp_form").on("submit", (event) => {
     })
 })
 
+// Message submissions
+$("#sendMessage").on("click", () => {
+
+    // check that the message has text in it
+    let message = ("#messageEntryArea").val()
+
+    // if it does call the handler
+    //TODO AJAC CALL HERE
+})
 
 
 
-  });
+
+});

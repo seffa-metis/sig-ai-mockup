@@ -8,3 +8,34 @@
     width: 5rem;
     margin-left: 3rem;
 }
+
+
+/* Forms */
+#messageEntryArea {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin: none;
+    padding: none;
+}
+
+#messageEntryArea::placeholder {
+    color: darkslategrey
+}
+
+#messageEntryArea:focus {
+    box-shadow: none;
+}
+
+#sendMessage {
+    color: darkslategray
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+#sendMessage:active {
+    box-shadow: none;
+}

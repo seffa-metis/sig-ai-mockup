@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="/includes/styles.css">
 
 	<!--- Title --->
-	<title>Welcome to Coldbox!</title>
+	<title>Fizzle home</title>
 </head>
 <body
 	data-spy="scroll"

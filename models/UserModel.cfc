@@ -119,7 +119,6 @@ component {
             " 
         )
         var idQuery = getID.execute().getResult()
-        writeDump(idQuery)
         return idQuery
     }
 
