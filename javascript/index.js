@@ -34,6 +34,7 @@ $("#signIn_form").on("submit", (event) => {
         success: function( userID ) { 
             // Redirect to the home page
             alert( "Sign in successful for user with id " + userID ) 
+            localStorage.setItem("userID", userID)
             const url = "http://127.0.0.1:55968/HomePage/index?userID=" + userID
             $(location).attr('href',url);
         },
@@ -80,11 +81,31 @@ $("#signUp_form").on("submit", (event) => {
 // Message submissions
 $("#sendMessage").on("click", () => {
 
-    // check that the message has text in it
+    let userID = localStorage.getItem("userID")
+
+    // TODO: check that the message has text in it
     let message = ("#messageEntryArea").val()
 
     // if it does call the handler
-    //TODO AJAC CALL HERE
+    $.ajax({
+        url: "http://127.0.0.1:55968/Home/postMessage?userID=" + userID,
+        type: "post",
+        contentType: "application/json",
+        data: JSON.stringify({
+            "message": $("#messageEntryArea").val(),
+        }),
+        success: function() { 
+            alert( "Message was posted!" ) 
+        },
+        error: function(jqXHR) {
+
+            if (jqXHR.status == 403) {
+                alert( "A user with this email already exists! " ) 
+            } else {
+                alert( "there was an unknown error posting this message." )
+            }
+        },
+    })
 })
 
 
