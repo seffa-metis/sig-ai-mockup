@@ -16,7 +16,6 @@ component{
 		event.paramValue("userID", "")
 
 		// get the users data
-		
 		// TODO: why cant it find this model?
 		// var userQuery = userModel.getUserByID( id=rc.userID )
 		var userQuery = wirebox.getInstance( "userModel" ).getUserByID( id=rc.userID );
@@ -28,7 +27,10 @@ component{
 			prc.userData = QueryGetRow(userQuery, 1)
 			event.setView( "HomePage/index" );
 			event.setLayout("Home")
-		}		
+		}
+
+		// TODO: Get the messages data
+
 	}
 
 	/**

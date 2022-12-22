@@ -76,6 +76,29 @@ component {
         return userQueryID
     }
 
+    // Get messages
+    public query function getMessages( required int quantity ) {
+        var getMessages = new Query();
+		getMessages.setDatasource("CFSQLTraining");
+		getMessages.setName("getMessages");
+        getMessages.setSQL(
+            " 
+            SELECT TOP :quantity
+                [id],
+                [username],
+                [characters],
+                [timestap],
+                [latitude],
+                [longitude]
+            FROM [CFSQLTraining].[dbo].[fizzleusers]
+            ORDER BY [timestap] DESC
+            " 
+        )
+        getMessages.addParam( name="quanity", value=ARGUMENTS.quantity)
+        var getMessagesQuery = getMessages.execute().getResult()
+        return getMessagesQuery
+    }
+
     // Gets the row with the highest id so we can generate a new ID
     public query function getHighestID () {
         var getID = new Query();
