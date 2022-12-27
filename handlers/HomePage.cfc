@@ -91,4 +91,23 @@ component{
 			relocate( "HomePage/index?userID=" & rc.userID);
 			event.setLayout("Home")
 		}
+
+	/**
+	* Post comment
+	*/
+	function postComment( event, rc, prc ){
+		event.paramValue("userID", "")
+		event.paramValue("messageID", "")
+		event.paramValue("userDisplayName", "")
+
+		wirebox.getInstance( "userModel" ).postComment(
+			messageID=rc.messageID,
+			userID=rc.userID,
+			date=Now(),
+			comment=rc.comment,
+			userdisplayname =rc.userDisplayName
+			);
+		relocate( "HomePage/index?userID=" & rc.userID);
+		event.setLayout("Home")
+	}
 }

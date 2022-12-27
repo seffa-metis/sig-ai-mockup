@@ -18,7 +18,8 @@
     padding: none;
 }
 
-#commentEntryArea {
+.commentEntryArea,
+.commentEntryArea:focus {
     background: #092ea8;
     border: none;
     outline: none;
@@ -26,7 +27,8 @@
     padding: none;
 }
 
-#commentEntryArea::placeholder {
+.commentEntryArea::placeholder,
+.commentEntryArea:focus {
     color: white;
 }
 
@@ -35,7 +37,7 @@
 }
 
 
-#messageEntryArea:focus, #commentEntryArea:focus {
+#messageEntryArea:focus, .commentEntryArea:focus {
     box-shadow: none;
 }
 
@@ -48,7 +50,7 @@
     box-shadow: none;
 }
 
-#sendMessage:active, #postComment:active {
+#sendMessage:active, .postComment:active {
     box-shadow: none;
 }
 

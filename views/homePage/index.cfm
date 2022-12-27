@@ -42,7 +42,7 @@
 <cfloop query="#prc.messageData#">
     <div class="container-fluid mt-2 bg-primary d-flex p-2 align-items-start w-100">
         <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
-        <div class="w-100" style="margin-left: 2rem">
+        <div class="w-100 messageContainer" style="margin-left: 2rem" id="messageID#messageID#">
             <div class="d-flex justify-content-between align-items">
                 <p>#username#</p>
                 <p>#timestap#</p>
@@ -53,25 +53,22 @@
                 <cfif #userID# == #prc.userData.id#> 
                     <!--- Store the message id so delete button knows which comment to delete. --->
                     <!--- TODO: This smells really bad. --->
-                    <button id="messageID#messageID#" class="btn btn-sm btn-danger deleteMessageButton">Delete Message</button> 
+                    <button  class="btn btn-sm btn-danger deleteMessageButton">Delete Message</button> 
                 </cfif> 
-                <button id="viewComment" class="btn btn-sm btn-primary">View Comments</button>
-                <button id="writeComment" class="btn btn-sm btn-primary">Write Comment</button>
+                <button class="btn btn-sm btn-primary viewComment">View Comments</button>
+                <button class="btn btn-sm btn-primary writeComment">Write Comment</button>
                
             </div>
             <!--- Write comment section, hidden by default, toggled by the 'writeComment' button --->
-            <form id="commentForm" style="display:none">
-                <div class="form-group">
-                    <textarea 
-                        class="form-control text-light mt-2 mb-2" 
-                        id="commentEntryArea" 
-                        rows="3"
-                        maxLength="140"
-                        placeholder="Comment something here..."
-                    ></textarea>
-                </div>
-                <button type="button" id="postComment" class="btn btn-sm btn-primary d-block" style="margin-left: auto">Post Comment</button>
-            </form>
+            <div id="commentForm" style="display:none">
+                <textarea 
+                    class="form-control text-light mt-2 mb-2 commentEntryArea" 
+                    rows="3"
+                    maxLength="140"
+                    placeholder="Comment something here..."
+                ></textarea>
+                <button type="button" class="btn btn-sm btn-primary d-block postComment" style="margin-left: auto">Post Comment</button>
+            </div>
         </div>
     </div>
 </cfloop>

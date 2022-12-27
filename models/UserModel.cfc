@@ -114,6 +114,31 @@ component {
         deleteMessageQuery.execute()
     }
 
+    // TODO: Get this working
+    public void function postComment( 
+  
+		required string messageID,
+        required string userID,
+        required string date,
+        required string comment,
+        required string userdisplayname
+    ) {
+        var postCommentQuery = new Query();
+		postCommentQuery.setDatasource("CFSQLTraining");
+		postCommentQuery.setName("postCOmment");
+        postCommentQuery.setSQL(
+            " 
+            INSERT INTO [CFSQLTraining].[dbo].[Comments]
+            VALUES (:messageID, :userID, GETDATE(), :comment,  :userdisplayname) 
+            " 
+        )
+        postCommentQuery.addParam( name="messageID", value=ARGUMENTS.messageID)
+        postCommentQuery.addParam( name="userID", value=ARGUMENTS.userID)
+        postCommentQuery.addParam( name="comment", value=ARGUMENTS.comment)
+        postCommentQuery.addParam( name="userdisplayname", value=ARGUMENTS.userdisplayname)
+		postCommentQuery.execute()
+    }
+
     // TODO: Get comments
     public query function getComments( required array messageIDs ) {
         // convert the array to an something SQL can use for an 'IN' clause
@@ -174,7 +199,7 @@ component {
     };
 
     /* 
-    NOTE: About the next two functions. The database we were given should have
+    NOTE: About the next three functions. The database we were given should have
     autoincremented IDs but that was not setup correctly. So for this exercise I am 
     just finding the highest id that is in there and adding +1 to it so I can insert data
     which requires IDs.
@@ -211,5 +236,7 @@ component {
         var idQuery = getHighestMessageID.execute().getResult()
         return idQuery
     }
+
+
 
 }

@@ -1,20 +1,6 @@
 $( document ).ready(function() {
 
-// Sign in / sign up form animations
-$("#signIn_heading").on("click", () => {
-    console.log("Clicked")
-    if ( $( "#signIn_form" ).first().is( ":hidden" ) ) {
-        $( "#signIn_form" ).slideDown( "slow" );
-        $( "#signUp_form" ).hide("slow");
-    } 
-})
-$("#signUp_heading").on("click", () => {
-    console.log("Clicked")
-    if ( $( "#signUp_form" ).first().is( ":hidden" ) ) {
-        $( "#signUp_form" ).slideDown( "slow" );
-        $( "#signIn_form" ).hide(400);
-    } 
-})
+
 
 // Sign in / sign up form submissions
 $("#signIn_form").on("submit", (event) => {
@@ -117,9 +103,9 @@ $(".deleteMessageButton").on("click", (event) => {
         return
     }
 
-    // The id is parsed from the id of the button which is "messageID<id>"
-    const messageID = event.target.id.substring(9)
-    console.log(messageID)
+    // The id is parsed from the id of the message container which is "messageID<id>"
+    const messageID = $(event.currentTarget).closest(".messageContainer").attr("id").substring(9)
+
     let userID = localStorage.getItem("userID")
 
      // if it does call the handler
@@ -137,21 +123,67 @@ $(".deleteMessageButton").on("click", (event) => {
 
 })
 
+// Post a comment
+//userID
+// messageID
+// userdisplayname
+$(".postComment").on("click", (event) => {
+
+    // Get all url parameters
+    let userID = localStorage.getItem("userID")
+    var userDisplayName = $("#username").text().slice(1)
+    // The id is parsed from the id of the message container which is "messageID<id>"
+    var messageID = $(event.currentTarget).closest(".messageContainer").attr("id").substring(9)
+
+    let comment = $(event.currentTarget).parent().find(".commentEntryArea").val()
+
+    // if it does call the handler
+    $.ajax({
+        url: "http://127.0.0.1:55968/HomePage/postComment?userID=" + String(userID) + "&userDisplayName=" + userDisplayName + "&messageID=" + messageID,
+        type: "post",
+        contentType: "application/json",
+        data: JSON.stringify({
+            "comment": comment,
+        }),
+        success: function() { 
+            alert("Comment successfully posted!")
+            // location.reload();
+        },
+        error: function(jqXHR) {
+            alert("Comment was not able to be posted!")
+        },
+    })
+})
+
+
+/*
+The following functions simply toggle forms and other things 
+*/
+
+// Sign in / sign up form animations
+$("#signIn_heading").on("click", () => {
+    console.log("Clicked")
+    if ( $( "#signIn_form" ).first().is( ":hidden" ) ) {
+        $( "#signIn_form" ).slideDown( "slow" );
+        $( "#signUp_form" ).hide("slow");
+    } 
+})
+$("#signUp_heading").on("click", () => {
+    console.log("Clicked")
+    if ( $( "#signUp_form" ).first().is( ":hidden" ) ) {
+        $( "#signUp_form" ).slideDown( "slow" );
+        $( "#signIn_form" ).hide(400);
+    } 
+})
+
 // Comment writting toggler
-$("#writeComment").on("click", (event) => {
-    // Find the associated 
+$(".writeComment").on("click", (event) => {
     $(event.currentTarget).parent().next().slideToggle()
-
-    // $("#commentForm").toggle()
-
 })
 
 // View Comment
-$("#viewComment").on("click", (event) => {
+$(".viewComment").on("click", (event) => {
     return
 })
-
-
-
 
 });
