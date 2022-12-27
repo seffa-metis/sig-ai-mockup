@@ -101,7 +101,6 @@ $("#sendMessage").on("click", () => {
             location.reload();
         },
         error: function(jqXHR) {
-
             if (jqXHR.status == 403) {
                 alert( " tough luck your message couldnt be posted " ) 
             } else {
@@ -109,6 +108,33 @@ $("#sendMessage").on("click", () => {
             }
         },
     })
+})
+
+// Delete a message
+$(".deleteMessageButton").on("click", (event) => {
+
+    if ( !confirm("Are you sure you want to delete this message?") ) {
+        return
+    }
+
+    // The id is parsed from the id of the button which is "messageID<id>"
+    const messageID = event.target.id.substring(9)
+    console.log(messageID)
+    let userID = localStorage.getItem("userID")
+
+     // if it does call the handler
+     $.ajax({
+        url: "http://127.0.0.1:55968/HomePage/deleteMessage?userID=" + String(userID) + "&messageID=" + String(messageID),
+        type: "post",
+        contentType: "application/json",
+        success: function() { 
+            location.reload();
+        },
+        error: function(jqXHR) {
+            alert("Message could not be deleted.")
+        },
+    })
+
 })
 
 // View Comment

@@ -77,26 +77,41 @@ component {
     }
 
     // Get messages
-    public query function getMessages( required string quantity ) {
+    public query function getMessages() {
         var getMessages = new Query();
 		getMessages.setDatasource("CFSQLTraining");
 		getMessages.setName("getMessages");
         getMessages.setSQL(
             " 
-            SELECT TOP 10
-                [id],
-                [username],
-                [characters],
-                [timestap],
-                [latitude],
-                [longitude]
-            FROM [CFSQLTraining].[dbo].[fizzlemessages]
-            ORDER BY [timestap] DESC
+            SELECT TOP 100
+                fm.username, 
+                fm.characters, 
+                fm.timestap, 
+                u.id as userID,
+                fm.id as messageID
+            FROM CFSQLTraining.dbo.fizzlemessages fm
+            INNER JOIN fizzleusers u ON fm.username = u.username
+            ORDER BY [timestap] DESC;
             " 
         )
-        getMessages.addParam( name="quantity", value=ARGUMENTS.quantity)
         var getMessagesQuery = getMessages.execute().getResult()
         return getMessagesQuery
+    }
+
+    // Delete a message
+    public void function deleteMessage( required string messageID ) {
+        writeDump(ARGUMENTS.messageID)
+        var deleteMessageQuery = new Query();
+		deleteMessageQuery.setDatasource("CFSQLTraining");
+		deleteMessageQuery.setName("deleteMessageQuery");
+        deleteMessageQuery.setSQL(
+            " 
+            DELETE FROM [CFSQLTraining].[dbo].[fizzlemessages]
+            WHERE fizzlemessages.ID = ( :messageID )
+            " 
+        )
+        deleteMessageQuery.addParam( name="messageID", value=ARGUMENTS.messageID)
+        deleteMessageQuery.execute()
     }
 
     // TODO: Get comments
@@ -158,6 +173,13 @@ component {
         postMessage.execute()
     };
 
+    /* 
+    NOTE: About the next two functions. The database we were given should have
+    autoincremented IDs but that was not setup correctly. So for this exercise I am 
+    just finding the highest id that is in there and adding +1 to it so I can insert data
+    which requires IDs.
+    */ 
+
     // Gets the row with the highest id so we can generate a new ID
     public query function getHighestUserID () {
         var getHighestUserID = new Query();
@@ -190,66 +212,4 @@ component {
         return idQuery
     }
 
-    // Updates a row with a given email
-    // public void function updateEmployee( 
-    //     required string firstName,
-    //     required string lastName,
-    //     required string address,
-    //     required string email,
-    //     required string phoneNumber
-    // ) {
-    //     var updateQuery = new Query();
-	// 	updateQuery.setDatasource("CFSQLTraining");
-	// 	updateQuery.setName("updateEmployee");
-    //     updateQuery.setSQL(
-    //         " 
-    //         UPDATE [CFSQLTraining].[dbo].[Employees]
-    //         SET 
-    //             firstname = ( :firstName ),
-    //             lastname =  ( :lastName ),
-    //             address =  ( :address ) ,
-    //             phone =  ( :phoneNumber )
-    //         WHERE email = ( :email )
-    //         " 
-    //     )
-    //     updateQuery.addParam( name="firstName", value=ARGUMENTS.firstName)
-    //     updateQuery.addParam( name="lastName", value=ARGUMENTS.lastName)
-    //     updateQuery.addParam( name="address", value=ARGUMENTS.address)
-    //     updateQuery.addParam( name="email", value=ARGUMENTS.email)
-    //     updateQuery.addParam( name="phoneNumber", value=ARGUMENTS.phoneNumber)
-	// 	updateQuery.execute()
-    // }
-    
-    // Reads all employee data
-    // public query function readEmployeeData() {
-	// 	var query = new Query();;
-	// 	query.setDatasource("CFSQLTraining");
-	// 	query.setName("getEmployees");
-	// 	var result = query.execute(
-	// 		sql = 
-    //             "
-	// 			SELECT
-	// 				[firstname],
-	// 				[lastname],
-	// 				[address],
-	// 				[email],
-	// 				[phone]
-	// 			FROM [CFSQLTraining].[dbo].[Employees]
-	// 		    "
-	// 	)
-    //     return result.getResult()
-    // }
-
-    // Deletes a row with the given email
-    // public void function deleteEmployee( required string email ) {
-	// 	var deleteQuery = new Query();;
-	// 	deleteQuery.setDatasource("CFSQLTraining");
-	// 	deleteQuery.setName("deleteEmployee");
-    //     deleteQuery.setSQL(
-    //         " DELETE FROM [CFSQLTraining].[dbo].[Employees]
-    //         WHERE email = ( :email ) " 
-    //     )
-    //     deleteQuery.addParam( name="email", value=ARGUMENTS.email)
-	// 	deleteQuery.execute()
-    // }
 }

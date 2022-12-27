@@ -4,7 +4,7 @@
 <div class="container-fluid bg-primary bg-gradient">
     <div class="jumbotron jumbotron-fluid p-4">
         <div class="container">
-            <div class="d-flex justify-content-around align-items-center">
+            <div class=d-flex justify-content-around align-items-center">
                 <div>
                     <h1 class="display-4 ">#prc.userData.firstname#  #prc.userData.lastname#</h1>
                     <p class="lead" id="username">@#prc.userData.username#</p>
@@ -38,7 +38,6 @@
     </button>
 </div>
 
-
 <!--- Message feed container  --->
 <cfloop query="#prc.messageData#">
     <div class="container-fluid mt-2 bg-primary d-flex p-2 align-items-center w-100">
@@ -49,16 +48,20 @@
                 <p>#timestap#</p>
             </div>
             #characters#
-            <!--- Store the message id so comments can use it when posting / viewing comments --->
-            <div class="d-flex justify-content-end" id="messageID#id#">
-                <button id="viewComment" class="btn btn-primary">View Comments</button>
-                <button id="writeComment" class="btn btn-primary">Write Comment</button>
+            
+            <div class="d-flex justify-content-end">
+                <button id="viewComment" class="btn btn-sm btn-primary">View Comments</button>
+                <button id="writeComment" class="btn btn-sm btn-primary">Write Comment</button>
+                <cfif #userID# == #prc.userData.id#> 
+                    <!--- Store the message id so delete button knows which comment to delete. --->
+                    <!--- TODO: This smells really bad. --->
+                    <button id="messageID#messageID#" class="btn btn-sm btn-danger deleteMessageButton">Delete Message</button> 
+                </cfif> 
             </div>
         </div>
     </div>
 </cfloop>
 
-<!--- <cfdump  var="#prc.commentData#"> --->
 
 
 

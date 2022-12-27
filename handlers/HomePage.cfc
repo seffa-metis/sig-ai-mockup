@@ -31,10 +31,20 @@ component{
 			prc.userData = QueryGetRow(userQuery, 1)
 
 			// Get and save the message data to the prc
-			prc.messageData = wirebox.getInstance( "userModel" ).getMessages( quantity="10" );
+			prc.messageData = wirebox.getInstance( "userModel" ).getMessages();
+
+			// Add a flag to each message if it belongs to the signed in user so they can delete it
+			// TODO: This doesnt work, is it possible to add new data into a query result like this?
+			// for (var message in prc.messageData) {
+			// 	if (message["id"] == prc.userData["id"]) {
+			// 		message["isDeletable"] = true
+			// 	} else {
+			// 		message["isDeletable"] = false
+			// 	}
+			// }
 			
 			// Use message IDs to get all comments and save to prc
-			var messageIDs = valueArray(prc.messageData, "id")
+			// var messageIDs = valueArray(prc.messageData, "messageID")
 			// TODO Once we actually have comments in the db
 			// prc.commentData = wirebox.getInstance( "userModel" ).getComments( messageIDs=messageIDs );
 
@@ -71,6 +81,14 @@ component{
 		event.setLayout("Home")
 	}
 
-
-
+	/**
+	* Delete message
+	*/
+	function deleteMessage( event, rc, prc ){
+			event.paramValue("userID", "")
+			event.paramValue("messageID", "")
+			wirebox.getInstance( "userModel" ).deleteMessage( messageID=rc.messageID );
+			relocate( "HomePage/index?userID=" & rc.userID);
+			event.setLayout("Home")
+		}
 }
