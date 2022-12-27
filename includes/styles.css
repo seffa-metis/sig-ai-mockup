@@ -33,7 +33,7 @@
 .btn:focus {
     outline: none;
     box-shadow: none;
-  }
+}
 
 #sendMessage:active {
     box-shadow: none;

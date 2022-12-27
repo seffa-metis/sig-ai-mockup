@@ -82,13 +82,15 @@ $("#signUp_form").on("submit", (event) => {
 $("#sendMessage").on("click", () => {
 
     let userID = localStorage.getItem("userID")
+    var username = $("#username").text().slice(1)
+    console.log(username)
 
     // TODO: check that the message has text in it
-    let message = ("#messageEntryArea").val()
+    let message = $("#messageEntryArea").val()
 
     // if it does call the handler
     $.ajax({
-        url: "http://127.0.0.1:55968/Home/postMessage?userID=" + userID,
+        url: "http://127.0.0.1:55968/HomePage/postMessage?userID=" + userID + "&username=" + username,
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
@@ -100,12 +102,17 @@ $("#sendMessage").on("click", () => {
         error: function(jqXHR) {
 
             if (jqXHR.status == 403) {
-                alert( "A user with this email already exists! " ) 
+                alert( " tough luck your message couldnt be posted " ) 
             } else {
                 alert( "there was an unknown error posting this message." )
             }
         },
     })
+})
+
+// View Comment
+$("#viewComment").on("click", (event) => {
+    return
 })
 
 

@@ -30,16 +30,17 @@ component{
 			// TODO: in prod we shouldnt be saving or returning passwords
 			prc.userData = QueryGetRow(userQuery, 1)
 
-			// TODO: get and save the message data to the prc
+			// Get and save the message data to the prc
 			prc.messageData = wirebox.getInstance( "userModel" ).getMessages( quantity="10" );
-
 			
+			// Use message IDs to get all comments and save to prc
+			var messageIDs = valueArray(prc.messageData, "id")
+			// TODO Once we actually have comments in the db
+			// prc.commentData = wirebox.getInstance( "userModel" ).getComments( messageIDs=messageIDs );
+
 			event.setView( "HomePage/index" );
 			event.setLayout("Home")
 		}
-
-		
-
 	}
 
 	/**
@@ -48,20 +49,22 @@ component{
 	function postMessage( event, rc, prc ){
 		// lets param a userId in the rc
 		event.paramValue("userID", "")
+		event.paramValue("username", "")
 
-		// retrieve the user's username 
-		// generate a timestamp
 		// TODO: How to find the lat and long?
+		// for now just use a static lat and long
+
+		// TODO: we need to determine the highest ID.... again....
 
 		wirebox.getInstance( "userModel" ).postMessage( 
 			id=rc.userID, 
-			username=username,
+			username=rc.username,
 			message=rc.message,
-			timestap=timestap,
-			latitude=latitude,
-			longitude =longitude
+			timestap=Now(),
+			latitude="49.8557953",
+			longitude ="20.8093376"
 			);
-		event.setView( "HomePage/index" );
+		event.setView( "HomePage/index/" + rc.userID );
 		event.setLayout("Home")
 	}
 

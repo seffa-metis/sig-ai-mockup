@@ -7,7 +7,7 @@
             <div class="d-flex justify-content-around align-items-center">
                 <div>
                     <h1 class="display-4 ">#prc.userData.firstname#  #prc.userData.lastname#</h1>
-                    <p class="lead">@#prc.userData.username#</p>
+                    <p class="lead" id="username">@#prc.userData.username#</p>
                 </div>
                 <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
             </div>
@@ -49,14 +49,16 @@
                 <p>#timestap#</p>
             </div>
             #characters#
-            <div class="d-flex justify-content-end">
-                <button>View Comments</button>
-                <button>Write Comment</button>
-            
+            <!--- Store the message id so comments can use it when posting / viewing comments --->
+            <div class="d-flex justify-content-end" id="messageID#id#">
+                <button id="viewComment" class="btn btn-primary">View Comments</button>
+                <button id="writeComment" class="btn btn-primary">Write Comment</button>
             </div>
         </div>
     </div>
 </cfloop>
+
+<!--- <cfdump  var="#prc.commentData#"> --->
 
 
 

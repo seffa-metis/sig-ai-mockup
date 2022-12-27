@@ -99,6 +99,32 @@ component {
         return getMessagesQuery
     }
 
+    // TODO: Get comments
+    public query function getComments( required array messageIDs ) {
+        // convert the array to an something SQL can use for an 'IN' clause
+
+        var getComments = new Query();
+		getComments.setDatasource("CFSQLTraining");
+		getComments.setName("getComments");
+        getComments.setSQL(
+            " 
+            SELECT
+                [commentid],
+                [postid],
+                [userid],
+                [date],
+                [comment],
+                [userdisplayname]
+            FROM [CFSQLTraining].[dbo].[Comments]
+            WHERE postid in :messageIDs
+            " 
+        )
+        getComments.addParam( name="messageIDs", value=ARGUMENTS.messageIDs)
+        var getCommentsQuery = getComments.execute().getResult()
+        return getCommentsQuery
+    }
+
+    // Post a new message
     public void function postMessage( 
         required string id, 
         required string username, 
@@ -117,7 +143,7 @@ component {
                 :id,
                 :username,
                 :characters,
-                :timestap,
+                GETDATE(),
                 :latitude,
                 :longitude
                 );
