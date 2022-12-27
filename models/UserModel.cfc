@@ -77,27 +77,60 @@ component {
     }
 
     // Get messages
-    public query function getMessages( required int quantity ) {
+    public query function getMessages( required string quantity ) {
         var getMessages = new Query();
 		getMessages.setDatasource("CFSQLTraining");
 		getMessages.setName("getMessages");
         getMessages.setSQL(
             " 
-            SELECT TOP :quantity
+            SELECT TOP 10
                 [id],
                 [username],
                 [characters],
                 [timestap],
                 [latitude],
                 [longitude]
-            FROM [CFSQLTraining].[dbo].[fizzleusers]
+            FROM [CFSQLTraining].[dbo].[fizzlemessages]
             ORDER BY [timestap] DESC
             " 
         )
-        getMessages.addParam( name="quanity", value=ARGUMENTS.quantity)
+        getMessages.addParam( name="quantity", value=ARGUMENTS.quantity)
         var getMessagesQuery = getMessages.execute().getResult()
         return getMessagesQuery
     }
+
+    public void function postMessage( 
+        required string id, 
+        required string username, 
+        required string message, 
+        required string timestap,
+        required string latitude,
+        required string longitude 
+        )  {
+        var postMessage = new Query();
+        postMessage.setDatasource("CFSQLTraining");
+        postMessage.setName("postMessage");
+        postMessage.setSQL(
+            " 
+            INSERT INTO [CFSQLTraining].[dbo].[fizzlemessages]
+            VALUES (
+                :id,
+                :username,
+                :characters,
+                :timestap,
+                :latitude,
+                :longitude
+                );
+            " 
+        )
+        postMessage.addParam( name="id", value=ARGUMENTS.id)
+        postMessage.addParam( name="username", value=ARGUMENTS.username)
+        postMessage.addParam( name="characters", value=ARGUMENTS.message)
+        postMessage.addParam( name="timestap", value=ARGUMENTS.timestap)
+        postMessage.addParam( name="latitude", value=ARGUMENTS.latitude)
+        postMessage.addParam( name="longitude", value=ARGUMENTS.longitude)
+        postMessage.execute()
+    };
 
     // Gets the row with the highest id so we can generate a new ID
     public query function getHighestID () {

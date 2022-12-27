@@ -4,11 +4,14 @@
 <div class="container-fluid bg-primary bg-gradient">
     <div class="jumbotron jumbotron-fluid p-4">
         <div class="container">
-            <div class="d-flex align-items-center">
-                <h1 class="display-4">#prc.userData.firstname#  #prc.userData.lastname#</h1>
+            <div class="d-flex justify-content-around align-items-center">
+                <div>
+                    <h1 class="display-4 ">#prc.userData.firstname#  #prc.userData.lastname#</h1>
+                    <p class="lead">@#prc.userData.username#</p>
+                </div>
                 <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
             </div>
-            <p class="lead">@#prc.userData.username#</p>
+            
         </div>
     </div>
 </div> <!--- container fluid --->
@@ -37,9 +40,24 @@
 
 
 <!--- Message feed container  --->
-<div class="container-fluid">
+<cfloop query="#prc.messageData#">
+    <div class="container-fluid mt-2 bg-primary d-flex p-2 align-items-center w-100">
+        <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
+        <div class="w-100" style="margin-left: 2rem">
+            <div class="d-flex justify-content-between align-items">
+                <p>#username#</p>
+                <p>#timestap#</p>
+            </div>
+            #characters#
+            <div class="d-flex justify-content-end">
+                <button>View Comments</button>
+                <button>Write Comment</button>
+            
+            </div>
+        </div>
+    </div>
+</cfloop>
 
-</div> <!--- container fluid --->
 
 
 
