@@ -18,11 +18,24 @@
     padding: none;
 }
 
+#commentEntryArea {
+    background: #092ea8;
+    border: none;
+    outline: none;
+    margin: none;
+    padding: none;
+}
+
+#commentEntryArea::placeholder {
+    color: white;
+}
+
 #messageEntryArea::placeholder {
     color: darkslategrey
 }
 
-#messageEntryArea:focus {
+
+#messageEntryArea:focus, #commentEntryArea:focus {
     box-shadow: none;
 }
 
@@ -35,6 +48,7 @@
     box-shadow: none;
 }
 
-#sendMessage:active {
+#sendMessage:active, #postComment:active {
     box-shadow: none;
 }
+

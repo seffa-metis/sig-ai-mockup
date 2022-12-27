@@ -137,6 +137,15 @@ $(".deleteMessageButton").on("click", (event) => {
 
 })
 
+// Comment writting toggler
+$("#writeComment").on("click", (event) => {
+    // Find the associated 
+    $(event.currentTarget).parent().next().slideToggle()
+
+    // $("#commentForm").toggle()
+
+})
+
 // View Comment
 $("#viewComment").on("click", (event) => {
     return
