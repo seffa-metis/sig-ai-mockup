@@ -55,16 +55,19 @@ component{
 		// for now just use a static lat and long
 
 		// TODO: we need to determine the highest ID.... again....
+		var highestIDquery = wirebox.getInstance( "userModel" ).getHighestMessageID();
+		var highestID = QueryGetRow(highestIDquery, 1)
+		var id = LSParseNumber(highestID['id']) + 1
 
-		wirebox.getInstance( "userModel" ).postMessage( 
-			id=rc.userID, 
+		wirebox.getInstance( "userModel" ).postMessage(
+			id=id, 
 			username=rc.username,
 			message=rc.message,
 			timestap=Now(),
 			latitude="49.8557953",
 			longitude ="20.8093376"
 			);
-		event.setView( "HomePage/index/" + rc.userID );
+		relocate( "HomePage/index?userID=" & rc.userID);
 		event.setLayout("Home")
 	}
 

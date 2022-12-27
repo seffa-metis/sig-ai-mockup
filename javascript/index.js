@@ -90,14 +90,15 @@ $("#sendMessage").on("click", () => {
 
     // if it does call the handler
     $.ajax({
-        url: "http://127.0.0.1:55968/HomePage/postMessage?userID=" + userID + "&username=" + username,
+        url: "http://127.0.0.1:55968/HomePage/postMessage?userID=" + String(userID) + "&username=" + username,
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
             "message": $("#messageEntryArea").val(),
         }),
         success: function() { 
-            alert( "Message was posted!" ) 
+            $("#messageEntryArea").val("")
+            location.reload();
         },
         error: function(jqXHR) {
 

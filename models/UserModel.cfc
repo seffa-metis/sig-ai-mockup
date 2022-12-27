@@ -159,25 +159,34 @@ component {
     };
 
     // Gets the row with the highest id so we can generate a new ID
-    public query function getHighestID () {
-        var getID = new Query();
-		getID.setDatasource("CFSQLTraining");
-		getID.setName("getID");
-        getID.setSQL(
+    public query function getHighestUserID () {
+        var getHighestUserID = new Query();
+		getHighestUserID.setDatasource("CFSQLTraining");
+		getHighestUserID.setName("getHighestUserID");
+        getHighestUserID.setSQL(
             " 
-            SELECT TOP 1 
-                [id],
-                [firstname],
-                [lastname],
-                [email],
-                [username],
-                [password],
-                [timezone]
+            SELECT TOP 1 [id]
             FROM [CFSQLTraining].[dbo].[fizzleusers]
             ORDER BY [id] DESC;
             " 
         )
-        var idQuery = getID.execute().getResult()
+        var idQuery = getHighestUserID.execute().getResult()
+        return idQuery
+    }
+
+    // Gets the row with the highest id so we can generate a new ID
+    public query function getHighestMessageID () {
+        var getHighestMessageID = new Query();
+		getHighestMessageID.setDatasource("CFSQLTraining");
+		getHighestMessageID.setName("getHighestMessageID");
+        getHighestMessageID.setSQL(
+            " 
+            SELECT TOP 1 [id]
+            FROM [CFSQLTraining].[dbo].[fizzlemessages]
+            ORDER BY [id] DESC;
+            " 
+        )
+        var idQuery = getHighestMessageID.execute().getResult()
         return idQuery
     }
 

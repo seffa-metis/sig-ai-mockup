@@ -64,7 +64,7 @@ component extends="coldbox.system.EventHandler" {
 
 			// Get the highest id that already exists ( assuming at least one entry exists )
 			// TODO: We would need to check that the record set has at least one row
-			var highestIDquery = userModel.getHighestID()
+			var highestIDquery = userModel.getHighestUserID()
 			var highestID = QueryGetRow(highestIDquery, 1)
 			var id = LSParseNumber(highestID['id']) + 1
 			
