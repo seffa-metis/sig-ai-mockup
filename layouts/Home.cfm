@@ -53,6 +53,9 @@
 						<li class="nav-item">
         					<a class="nav-link" href="##">Sign Out</a>
       					</li>
+						<li class="nav-item">
+        					<a role="button" class="nav-link" id="editProfileToggler">Edit Profile</a>
+      					</li>
 					</ul>
 				</div>
 			</div>

@@ -123,4 +123,13 @@ component{
 		prc.commentData = StructNew()
 		var commentData = wirebox.getInstance( "userModel" ).getComments();
 	}
+
+	/**
+	* Get user by id
+	*/
+	function getUserByID( event, rc, prc ) {
+		event.paramValue("userID", "")
+		var userDataQuery = wirebox.getInstance( "userModel" ).getUserByID( id=rc.userID )
+		return QueryGetRow(userDataQuery, 1)
+	}
 }

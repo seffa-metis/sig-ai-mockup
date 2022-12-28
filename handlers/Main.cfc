@@ -86,25 +86,6 @@ component extends="coldbox.system.EventHandler" {
 		event.setView("main/index");
 	}
 
-	/**
-	 * Produce some restfulf data
-	 */
-	function data( event, rc, prc ) {
-		return [
-			{ "id" : createUUID(), name : "Luis" },
-			{ "id" : createUUID(), name : "JOe" },
-			{ "id" : createUUID(), name : "Bob" },
-			{ "id" : createUUID(), name : "Darth" }
-		];
-	}
-
-	/**
-	 * Relocation example
-	 */
-	function doSomething( event, rc, prc ) {
-		relocate( "main.index" );
-	}
-
 	/************************************** IMPLICIT ACTIONS *********************************************/
 
 	function onAppInit( event, rc, prc ) {

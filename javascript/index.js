@@ -168,7 +168,7 @@ Delete a comment
 */
 $(".deleteCommentButton").on("click", (event) => {
 
-    if ( !confirm("Are you sure you want to delete this comment?") ) {
+    if ( !confirm("Are you sure you want to delete this comment?")) {
         return
     }
 
@@ -196,7 +196,7 @@ $(".deleteCommentButton").on("click", (event) => {
 
 
 /*
-The following functions simply toggle forms and other things 
+The following functions toggle elements on and off
 */
 
 // Sign in form animations
@@ -225,6 +225,29 @@ $(".writeComment").on("click", (event) => {
 // View Comment
 $(".viewComment").on("click", (event) => {
     $(event.currentTarget).closest(".messageContainer").find(".commentContainer").slideToggle()
+})
+
+// Edit profile toggler which getrs the users information and pre-fills it
+$("#editProfileToggler").on("click", () => {
+    let userID = localStorage.getItem("userID")
+
+    $.ajax({
+        url: "http://127.0.0.1:55968/HomePage/getUserByID?userID=" + String(userID),
+        type: "post",
+        contentType: "application/json",
+        success: function( userData ) { 
+            // populates the table with the user's current information
+            $("#editProfileForm_firstname").val(userData["FIRSTNAME"])
+            $("#editProfileForm_lastname").val(userData["LASTNAME"])
+            $("#editProfileForm_username").val(userData["USERNAME"])
+            $("#editProfileForm_email").val(userData["EMAIL"])
+            $("#editProfileForm_timezone").val(userData["TIMEZONE"])
+            $(".editProfileContainer").slideToggle()
+        },
+        error: function(jqXHR) {
+            alert("User info could not be retrieved.")
+        },
+    }) 
 })
 
 });

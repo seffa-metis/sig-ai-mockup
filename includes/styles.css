@@ -64,3 +64,11 @@
 
 }
 
+.editProfileContainer {
+    background: #092ea8;
+}
+
+.editProfileContainer > * {
+    color: white;
+}
+

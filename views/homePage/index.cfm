@@ -14,7 +14,46 @@
             
         </div>
     </div>
-</div> <!--- container fluid --->
+</div>
+
+<!---Edit Profile form, hidden by default --->
+<div class="container-fluid p-3 editProfileContainer mt-1" style="display: none">
+    <div class="container">
+        <h3>Edit Profile</h3>
+        <form id="editProfileForm">
+            <div class="form-group">
+                <label for="editProfileForm_firstname">First Name</label>
+                <input required type="text" class="form-control" id="editProfileForm_firstname" >
+            </div>
+            <div class="form-group">
+                <label for="editProfileForm_lastname">Last Name</label>
+                <input required type="text" class="form-control" id="editProfileForm_lastname" >
+            </div>
+            <div class="form-group">
+                <label for="editProfileForm_username">Username</label>
+                <input required type="text" class="form-control" id="editProfileForm_username" >
+            </div>
+            <div class="form-group">
+                <label for="editProfileForm_email">Email address</label>
+                <input required type="email" class="form-control" id="editProfileForm_email" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group">
+                <label for="editProfileForm_password">Password</label>
+                <input required type="password" class="form-control" id="editProfileForm_password" >
+            </div>
+            <div class="form-group">
+                <label for="editProfileForm_timezone">Time Zone</label>    
+                <select class="form-control form-control-sm" id="editProfileForm_timezone">
+                    <option>AST Atlantic</option>
+                    <option>EST Eastern</option>
+                    <option>CST Central</option>
+                    <option>MST Mountain</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary mt-2" id="editProfileSubmissionButton">Submit</button>
+        </form>
+    </div>
+</div>
 
 <!--- Message entry container --->
 <div class="container-fluid bg-info mt-1">
