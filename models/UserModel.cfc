@@ -77,6 +77,11 @@ component {
     }
 
     // Get messages
+    // NOTE: This query uses an inner join which only gets posts which are associated with
+    // users who are also in the user table. Since this database was automatically generated,
+    // there are lots of posts that were generated that do not match a user in the user table.
+    // Since that would never happen in a real application, i am only using posts that are properly
+    // associated with users in the user table ( users created by me, and not auto-generated ).
     public query function getMessages() {
         var getMessages = new Query();
 		getMessages.setDatasource("CFSQLTraining");
@@ -114,7 +119,7 @@ component {
         deleteMessageQuery.execute()
     }
 
-    // TODO: Get this working
+
     public void function postComment( 
   
 		required string messageID,
@@ -140,9 +145,7 @@ component {
     }
 
     // TODO: Get comments
-    public query function getComments( required array messageIDs ) {
-        // convert the array to an something SQL can use for an 'IN' clause
-
+    public query function getComments( required string messageID ) {
         var getComments = new Query();
 		getComments.setDatasource("CFSQLTraining");
 		getComments.setName("getComments");
@@ -156,10 +159,10 @@ component {
                 [comment],
                 [userdisplayname]
             FROM [CFSQLTraining].[dbo].[Comments]
-            WHERE postid in :messageIDs
+            WHERE postid =  ( :messageID )
             " 
         )
-        getComments.addParam( name="messageIDs", value=ARGUMENTS.messageIDs)
+        getComments.addParam( name="messageID", value=ARGUMENTS.messageID)
         var getCommentsQuery = getComments.execute().getResult()
         return getCommentsQuery
     }

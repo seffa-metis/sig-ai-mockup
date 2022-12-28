@@ -40,6 +40,8 @@
 
 <!--- Message feed container  --->
 <cfloop query="#prc.messageData#">
+
+    <!--- Message Construction --->
     <div class="container-fluid mt-2 bg-primary d-flex p-2 align-items-start w-100">
         <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
         <div class="w-100 messageContainer" style="margin-left: 2rem" id="messageID#messageID#">
@@ -48,7 +50,7 @@
                 <p>#timestap#</p>
             </div>
             #characters#
-            
+            <!--- Button Options --->
             <div class="d-flex justify-content-end">
                 <cfif #userID# == #prc.userData.id#> 
                     <!--- Store the message id so delete button knows which comment to delete. --->
@@ -57,7 +59,6 @@
                 </cfif> 
                 <button class="btn btn-sm btn-primary viewComment">View Comments</button>
                 <button class="btn btn-sm btn-primary writeComment">Write Comment</button>
-               
             </div>
             <!--- Write comment section, hidden by default, toggled by the 'writeComment' button --->
             <div id="commentForm" style="display:none">
@@ -68,6 +69,17 @@
                     placeholder="Comment something here..."
                 ></textarea>
                 <button type="button" class="btn btn-sm btn-primary d-block postComment" style="margin-left: auto">Post Comment</button>
+            </div>
+
+            <!--- Comments, hidden by default --->
+            <div class="commentContainer" style="display:none">
+                <div class="comment mt-2 p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="mb-0">Username Here</p>
+                        <p class="mb-0">Timestamp Here</p>
+                    </div>
+                    <p class="text-wrap text-break mb-0">This is a test comment. How amazine this post is! Amazing! lalalalalalalalal alallalalalala lalalallalala.lalalalalal alalalalallalalalalalalalallalala.lalalalalalalalalalallalalalalalalalallalala.lalalalalalalalalalallalalalalalalalallalala.lalalalalalalalalalallalalalalalalalallalala.</p>
+                </div>
             </div>
         </div>
     </div>

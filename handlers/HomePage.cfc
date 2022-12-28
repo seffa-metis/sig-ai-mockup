@@ -43,10 +43,16 @@ component{
 			// 	}
 			// }
 			
-			// Use message IDs to get all comments and save to prc
-			// var messageIDs = valueArray(prc.messageData, "messageID")
-			// TODO Once we actually have comments in the db
-			// prc.commentData = wirebox.getInstance( "userModel" ).getComments( messageIDs=messageIDs );
+			// For each message, get the associated comments and save them to a struct, then save the struct to the prc
+			var commentData = StructNew()
+			for (var message in prc.messageData) {
+				writeDump(message["messageID"])
+				var commentResults = wirebox.getInstance( "userModel" ).getComments(message["messageID"]);
+				commentData[message["messageID"]] = commentResults
+			}
+			writeDump(commentData)
+			prc.commentData = commentData
+			
 
 			event.setView( "HomePage/index" );
 			event.setLayout("Home")
@@ -103,11 +109,18 @@ component{
 		wirebox.getInstance( "userModel" ).postComment(
 			messageID=rc.messageID,
 			userID=rc.userID,
-			date=Now(),
 			comment=rc.comment,
 			userdisplayname =rc.userDisplayName
 			);
 		relocate( "HomePage/index?userID=" & rc.userID);
 		event.setLayout("Home")
+	}
+
+	/**
+	* Get comments for a post
+	*/
+	function getComments( event, rc, prc ) {
+		prc.commentData = StructNew()
+		var commentData = wirebox.getInstance( "userModel" ).getComments();
 	}
 }

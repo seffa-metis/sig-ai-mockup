@@ -183,7 +183,7 @@ $(".writeComment").on("click", (event) => {
 
 // View Comment
 $(".viewComment").on("click", (event) => {
-    return
+    $(event.currentTarget).closest(".messageContainer").find(".commentContainer").slideToggle()
 })
 
 });
