@@ -88,15 +88,20 @@ component {
 		getMessages.setName("getMessages");
         getMessages.setSQL(
             " 
-            SELECT TOP 100
-                fm.username, 
-                fm.characters, 
-                fm.timestap, 
-                u.id as userID,
-                fm.id as messageID
+            SELECT TOP 10
+                fm.username as messageUsername, 
+                fm.characters as message, 
+                fm.timestap as messageDate, 
+                u.id as messageUserID,
+                fm.id as messageID,
+                c.comment,
+                c.date as commentDate,
+                c.userid as commentUserID,
+                c.userdisplayname as commentUsername
             FROM CFSQLTraining.dbo.fizzlemessages fm
             INNER JOIN fizzleusers u ON fm.username = u.username
-            ORDER BY [timestap] DESC;
+            LEFT JOIN Comments c ON c.postid = fm.id
+            ORDER BY messageID DESC, commentDate DESC;
             " 
         )
         var getMessagesQuery = getMessages.execute().getResult()
@@ -121,10 +126,8 @@ component {
 
 
     public void function postComment( 
-  
 		required string messageID,
         required string userID,
-        required string date,
         required string comment,
         required string userdisplayname
     ) {

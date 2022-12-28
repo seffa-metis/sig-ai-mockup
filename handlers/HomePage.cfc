@@ -42,17 +42,6 @@ component{
 			// 		message["isDeletable"] = false
 			// 	}
 			// }
-			
-			// For each message, get the associated comments and save them to a struct, then save the struct to the prc
-			var commentData = StructNew()
-			for (var message in prc.messageData) {
-				writeDump(message["messageID"])
-				var commentResults = wirebox.getInstance( "userModel" ).getComments(message["messageID"]);
-				commentData[message["messageID"]] = commentResults
-			}
-			writeDump(commentData)
-			prc.commentData = commentData
-			
 
 			event.setView( "HomePage/index" );
 			event.setLayout("Home")

@@ -39,51 +39,82 @@
 </div>
 
 <!--- Message feed container  --->
+<cfset visitedMessageIDs = ArrayNew(1)>
 <cfloop query="#prc.messageData#">
+    <!--- 
+        Messages in this query will be in order by mesage ID. There will be duplicate message entries because the query
+        also contains all the comments for each message. We must check if a row is a new message by using the visitedMessageIDs array, 
+        then add that message and a comment if it has one. When we get to a new row, if its the same message as the last, 
+        we dont create a new message, but instead create just new comment for the previous message.
+        
+        This is currently uses a double for loop but could be reduced to a single for loop using a struct to keep track of
+        data during each iteration. But for simplicity ill just use a double loop.
+    --->
 
-    <!--- Message Construction --->
-    <div class="container-fluid mt-2 bg-primary d-flex p-2 align-items-start w-100">
-        <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
-        <div class="w-100 messageContainer" style="margin-left: 2rem" id="messageID#messageID#">
-            <div class="d-flex justify-content-between align-items">
-                <p>#username#</p>
-                <p>#timestap#</p>
-            </div>
-            #characters#
-            <!--- Button Options --->
-            <div class="d-flex justify-content-end">
-                <cfif #userID# == #prc.userData.id#> 
-                    <!--- Store the message id so delete button knows which comment to delete. --->
-                    <!--- TODO: This smells really bad. --->
-                    <button  class="btn btn-sm btn-danger deleteMessageButton">Delete Message</button> 
-                </cfif> 
-                <button class="btn btn-sm btn-primary viewComment">View Comments</button>
-                <button class="btn btn-sm btn-primary writeComment">Write Comment</button>
-            </div>
-            <!--- Write comment section, hidden by default, toggled by the 'writeComment' button --->
-            <div id="commentForm" style="display:none">
-                <textarea 
-                    class="form-control text-light mt-2 mb-2 commentEntryArea" 
-                    rows="3"
-                    maxLength="140"
-                    placeholder="Comment something here..."
-                ></textarea>
-                <button type="button" class="btn btn-sm btn-primary d-block postComment" style="margin-left: auto">Post Comment</button>
-            </div>
+    <cfset currentMessageID = #messageID#>
 
-            <!--- Comments, hidden by default --->
-            <div class="commentContainer" style="display:none">
-                <div class="comment mt-2 p-2">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <p class="mb-0">Username Here</p>
-                        <p class="mb-0">Timestamp Here</p>
-                    </div>
-                    <p class="text-wrap text-break mb-0">This is a test comment. How amazine this post is! Amazing! lalalalalalalalal alallalalalala lalalallalala.lalalalalal alalalalallalalalalalalalallalala.lalalalalalalalalalallalalalalalalalallalala.lalalalalalalalalalallalalalalalalalallalala.lalalalalalalalalalallalalalalalalalallalala.</p>
+    <!---  If the messageID isnt in out list of visited messages...  --->
+    <cfif not arrayFind(visitedMessageIDs, currentMessageID)>
+        
+        <!--- First add it to the visitedMessages array to keep track of it --->
+        <!--- TODO: How do i do this with tags? --->
+        <cfscript>
+            arrayAppend(visitedMessageIDs, currentMessageID);
+        </cfscript>
+
+        <!--- Then create a new message --->
+        <div class="container-fluid mt-2 bg-primary d-flex p-2 align-items-start w-100">
+            <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
+            <div class="w-100 messageContainer" style="margin-left: 2rem" id="messageID#messageID#">
+                <div class="d-flex justify-content-between align-items">
+                    <p>#messageUsername#</p>
+                    <p>#messageDate#</p>
                 </div>
-            </div>
-        </div>
-    </div>
-</cfloop>
+                #message#
+                <!--- Button Options --->
+                <div class="d-flex justify-content-end">
+                    <cfif #messageUserID# == #prc.userData.id#> 
+                        <!--- Store the message id so delete button knows which comment to delete. --->
+                        <!--- TODO: This smells really bad. --->
+                        <button  class="btn btn-sm btn-danger deleteMessageButton">Delete Message</button> 
+                    </cfif> 
+                    <button class="btn btn-sm btn-primary viewComment">View Comments</button>
+                    <button class="btn btn-sm btn-primary writeComment">Write Comment</button>
+                </div>
+                <!--- Write comment section, hidden by default, toggled by the 'writeComment' button --->
+                <div id="commentForm" style="display:none">
+                    <textarea 
+                        class="form-control text-light mt-2 mb-2 commentEntryArea" 
+                        rows="3"
+                        maxLength="140"
+                        placeholder="Comment something here..."
+                    ></textarea>
+                    <button type="button" class="btn btn-sm btn-primary d-block postComment" style="margin-left: auto">Post Comment</button>
+                </div>
+
+                <!--- Comment container, hidden by default --->
+                <div class="commentContainer" style="display:none">
+
+                    <!--- Loop through the query again, and find comments that match this message and create them.--->
+                    <cfloop query="#prc.messageData#">
+                        <!--- If this row is a part of the same message, create a comment. --->
+                        <cfif #messageID# == currentMessageID>
+                            <div class="comment mt-2 p-2">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <p class="mb-0">#commentUsername#</p>
+                                    <p class="mb-0">#commentDate#</p>
+                                </div>
+                                <p class="text-wrap text-break mb-0">#comment#</p>
+                            </div>
+                        </cfif>
+                    </cfloop> <!--- Comment loop --->
+                
+                </div> <!--- Comment container --->
+            </div> <!--- Message container --->
+        </div> <!--- Message + picture container --->
+    </cfif>
+
+</cfloop> <!--- Message loop --->
 
 
 
