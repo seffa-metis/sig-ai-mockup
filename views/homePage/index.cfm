@@ -47,8 +47,7 @@
         then add that message and a comment if it has one. When we get to a new row, if its the same message as the last, 
         we dont create a new message, but instead create just new comment for the previous message.
         
-        This is currently uses a double for loop but could be reduced to a single for loop using a struct to keep track of
-        data during each iteration. But for simplicity ill just use a double loop.
+        This is currently uses a double for loop but could be reduced to a single iteration if the html was re-structured.
     --->
 
     <cfset currentMessageID = #messageID#>
@@ -81,7 +80,7 @@
                     <button class="btn btn-sm btn-primary viewComment">View Comments</button>
                     <button class="btn btn-sm btn-primary writeComment">Write Comment</button>
                 </div>
-                <!--- Write comment section, hidden by default, toggled by the 'writeComment' button --->
+                <!--- Write new comment section, hidden by default, toggled by the 'writeComment' button --->
                 <div id="commentForm" style="display:none">
                     <textarea 
                         class="form-control text-light mt-2 mb-2 commentEntryArea" 
@@ -99,12 +98,15 @@
                     <cfloop query="#prc.messageData#">
                         <!--- If this row is a part of the same message, create a comment. --->
                         <cfif #messageID# == currentMessageID>
-                            <div class="comment mt-2 p-2">
+                            <div class="comment mt-2 p-2" id="commentID#commentid#">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <p class="mb-0">#commentUsername#</p>
                                     <p class="mb-0">#commentDate#</p>
                                 </div>
                                 <p class="text-wrap text-break mb-0">#comment#</p>
+                                <cfif #commentUserID# == #prc.userData.id#>
+                                    <button  class="btn btn-sm btn-danger deleteCommentButton d-block" style="margin-left: auto">Delete Comment</button>
+                                </cfif>
                             </div>
                         </cfif>
                     </cfloop> <!--- Comment loop --->

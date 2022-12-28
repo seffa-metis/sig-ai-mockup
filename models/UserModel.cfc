@@ -97,7 +97,8 @@ component {
                 c.comment,
                 c.date as commentDate,
                 c.userid as commentUserID,
-                c.userdisplayname as commentUsername
+                c.userdisplayname as commentUsername,
+                c.commentid
             FROM CFSQLTraining.dbo.fizzlemessages fm
             INNER JOIN fizzleusers u ON fm.username = u.username
             LEFT JOIN Comments c ON c.postid = fm.id
@@ -110,7 +111,6 @@ component {
 
     // Delete a message
     public void function deleteMessage( required string messageID ) {
-        writeDump(ARGUMENTS.messageID)
         var deleteMessageQuery = new Query();
 		deleteMessageQuery.setDatasource("CFSQLTraining");
 		deleteMessageQuery.setName("deleteMessageQuery");
@@ -123,8 +123,24 @@ component {
         deleteMessageQuery.addParam( name="messageID", value=ARGUMENTS.messageID)
         deleteMessageQuery.execute()
     }
+    
+    // Delete a Comment
+    public void function deleteComment( required string commentID ) {
+        var deleteCommentQuery = new Query();
+		deleteCommentQuery.setDatasource("CFSQLTraining");
+		deleteCommentQuery.setName("deleteCommentQuery");
+        deleteCommentQuery.setSQL(
+            " 
+            DELETE FROM [CFSQLTraining].[dbo].[Comments]
+            WHERE Comments.commentid = ( :commentID )
+            " 
+        )
+        deleteCommentQuery.addParam( name="commentID", value=ARGUMENTS.commentID)
+        deleteCommentQuery.execute()
+    }
 
 
+    // Post a Comment
     public void function postComment( 
 		required string messageID,
         required string userID,
@@ -147,28 +163,6 @@ component {
 		postCommentQuery.execute()
     }
 
-    // TODO: Get comments
-    public query function getComments( required string messageID ) {
-        var getComments = new Query();
-		getComments.setDatasource("CFSQLTraining");
-		getComments.setName("getComments");
-        getComments.setSQL(
-            " 
-            SELECT
-                [commentid],
-                [postid],
-                [userid],
-                [date],
-                [comment],
-                [userdisplayname]
-            FROM [CFSQLTraining].[dbo].[Comments]
-            WHERE postid =  ( :messageID )
-            " 
-        )
-        getComments.addParam( name="messageID", value=ARGUMENTS.messageID)
-        var getCommentsQuery = getComments.execute().getResult()
-        return getCommentsQuery
-    }
 
     // Post a new message
     public void function postMessage( 

@@ -1,8 +1,9 @@
 $( document ).ready(function() {
 
 
-
-// Sign in / sign up form submissions
+/*
+Sign-in form submission
+*/
 $("#signIn_form").on("submit", (event) => {
 
     // TODO: not sure why things are getting submnitted twice when I dont have these?
@@ -35,6 +36,10 @@ $("#signIn_form").on("submit", (event) => {
         },
     })
 })
+
+/*
+Sign-up form submission
+*/
 $("#signUp_form").on("submit", (event) => {
 
     // TODO: not sure why things are getting submnitted twice when I dont have these?
@@ -64,7 +69,9 @@ $("#signUp_form").on("submit", (event) => {
     })
 })
 
-// Message submissions
+/* 
+Message submission
+*/
 $("#sendMessage").on("click", () => {
 
     let userID = localStorage.getItem("userID")
@@ -96,7 +103,9 @@ $("#sendMessage").on("click", () => {
     })
 })
 
-// Delete a message
+/* 
+Delete a message
+*/
 $(".deleteMessageButton").on("click", (event) => {
 
     if ( !confirm("Are you sure you want to delete this message?") ) {
@@ -123,10 +132,9 @@ $(".deleteMessageButton").on("click", (event) => {
 
 })
 
-// Post a comment
-//userID
-// messageID
-// userdisplayname
+/* 
+Post a comment
+*/
 $(".postComment").on("click", (event) => {
 
     // Get all url parameters
@@ -155,12 +163,43 @@ $(".postComment").on("click", (event) => {
     })
 })
 
+/* 
+Delete a comment
+*/
+$(".deleteCommentButton").on("click", (event) => {
+
+    if ( !confirm("Are you sure you want to delete this comment?") ) {
+        return
+    }
+
+    // The id is parsed from the id of the message container which is "messageID<id>"
+    const commentID = $(event.currentTarget).closest(".comment").attr("id").substring(9)
+ 
+    let userID = localStorage.getItem("userID")
+
+     // if it does call the handler
+     $.ajax({
+        url: "http://127.0.0.1:55968/HomePage/deleteComment?userID=" + String(userID) + "&commentID=" + String(commentID),
+        type: "post",
+        contentType: "application/json",
+        success: function() { 
+            alert("Comment successfully deleted.")
+            location.reload();
+        },
+        error: function(jqXHR) {
+            alert("Comment could not be deleted.")
+        },
+    })
+
+
+})
+
 
 /*
 The following functions simply toggle forms and other things 
 */
 
-// Sign in / sign up form animations
+// Sign in form animations
 $("#signIn_heading").on("click", () => {
     console.log("Clicked")
     if ( $( "#signIn_form" ).first().is( ":hidden" ) ) {
@@ -168,6 +207,8 @@ $("#signIn_heading").on("click", () => {
         $( "#signUp_form" ).hide("slow");
     } 
 })
+
+// Sign up form animations
 $("#signUp_heading").on("click", () => {
     console.log("Clicked")
     if ( $( "#signUp_form" ).first().is( ":hidden" ) ) {

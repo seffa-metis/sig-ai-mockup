@@ -88,6 +88,17 @@ component{
 		}
 
 	/**
+	* Delete comment
+	*/
+	function deleteComment( event, rc, prc ){
+			event.paramValue("userID", "")
+			event.paramValue("commentID", "")
+			wirebox.getInstance( "userModel" ).deleteComment( commentID=rc.commentID );
+			relocate( "HomePage/index?userID=" & rc.userID);
+			event.setLayout("Home")
+		}
+
+	/**
 	* Post comment
 	*/
 	function postComment( event, rc, prc ){
