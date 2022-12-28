@@ -154,8 +154,8 @@ $(".postComment").on("click", (event) => {
             "comment": comment,
         }),
         success: function() { 
-            alert("Comment successfully posted!")
-            // location.reload();
+            // alert("Comment successfully posted!")
+            location.reload();
         },
         error: function(jqXHR) {
             alert("Comment was not able to be posted!")
@@ -183,15 +183,49 @@ $(".deleteCommentButton").on("click", (event) => {
         type: "post",
         contentType: "application/json",
         success: function() { 
-            alert("Comment successfully deleted.")
             location.reload();
         },
         error: function(jqXHR) {
             alert("Comment could not be deleted.")
         },
     })
+})
 
+/* 
+Update profile information
+*/
+$("#editProfileSubmissionButton").on("click", (event)=> {
+    event.preventDefault();
+    event.stopImmediatePropagation();
 
+    let userID = localStorage.getItem("userID")
+
+    $.ajax({
+        url: "http://127.0.0.1:55968/HomePage/updateUser?userID=" + String(userID),
+        type: "post",
+        contentType: "application/json",
+        data: JSON.stringify({
+            "email": $("#editProfileForm_email").val(),
+            "password": $("#editProfileForm_password").val(),
+            "username": $("#editProfileForm_username").val(),
+            "firstname": $("#editProfileForm_firstname").val(),
+            "lastname": $("#editProfileForm_lastname").val(),
+            "timezone": $("#editProfileForm_timezone").val(),
+        }),
+        success: function(  ) { 
+            alert( "Profile information updated!" ) 
+            location.reload();
+        },
+        error: function(jqXHR) {
+
+            // TODO: Is this the correct way to handle error responses?
+            if (jqXHR.status == 403) {
+                alert( "A user with this email already exists! " ) 
+            } else {
+                alert( "Something else went wrong when updated user info. ")
+            }
+        },
+    })
 })
 
 

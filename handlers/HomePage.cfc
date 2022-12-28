@@ -132,4 +132,48 @@ component{
 		var userDataQuery = wirebox.getInstance( "userModel" ).getUserByID( id=rc.userID )
 		return QueryGetRow(userDataQuery, 1)
 	}
+
+	/**
+	* Update user
+	*/
+ 	function updateUser( event, rc, prc ) {
+		event.paramValue("userID", "")
+
+		// Get the user's current information
+		var currentUserQuery = wirebox.getInstance( "userModel" ).getUserByID( rc.userID )
+		var userInfo = QueryGetRow(currentUserQuery, 1)
+
+		// Check to see if user with this email or username already exist
+		var emailCheckQuery = wirebox.getInstance( "userModel" ).getUserByEmail( rc.email )
+
+		// If they changed their email, no records will be found
+		// If they didnt change their email, one matching record will be found
+		// If thats the case, we need to make sure it matches their previous email, and not an 
+		// email of another user.
+		writeDump(emailCheckQuery.recordcount == 1)
+		writeDump(userInfo["email"])
+		writeDump(emailCheckQuery["email"])
+		var email1 = userInfo["email"]
+		var email2 = emailCheckQuery["email"]
+		writeDump(email1 != email2)
+	
+		if (emailCheckQuery.recordcount == 1 AND email1 != email2) {
+			writeDump("HERE")
+			event.renderData( type="json", data={"Error": "User with this email already exists."}, statusCode=403 );
+			return
+		}
+
+		wirebox.getInstance( "userModel" ).updateUser(
+			id=rc.userID,
+			firstname=rc.firstname,
+			lastname=rc.lastname,
+			username=rc.username,
+			email=rc.email,
+			password=rc.password,
+			timezone=rc.timezone
+		)
+
+		relocate( "HomePage/index?userID=" & rc.userID);
+		event.setLayout("Home")
+	}
 }

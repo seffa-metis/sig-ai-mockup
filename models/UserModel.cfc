@@ -76,6 +76,43 @@ component {
         return userQueryID
     }
 
+    // Update user
+    public void function updateUser (
+        required string id,
+        required string firstname,
+        required string lastname,
+        required string username,
+        required string email,
+        required string password,
+        required string timezone
+    ) {
+        var updateQuery = new Query();
+        updateQuery.setDatasource("CFSQLTraining");
+        updateQuery.setName("updateUser");
+        updateQuery.setSQL(
+            " 
+            UPDATE [CFSQLTraining].[dbo].[fizzleusers]
+            SET
+                id = ( :id ), 
+                firstname = ( :firstname ), 
+                lastname = ( :lastname ), 
+                email = ( :email ), 
+                username = ( :username ),  
+                password = ( :password ), 
+                timezone = ( :timezone )
+            WHERE id = ( :id )
+            " 
+        )
+        updateQuery.addParam( name="id", value=ARGUMENTS.id)
+        updateQuery.addParam( name="firstname", value=ARGUMENTS.firstname)
+        updateQuery.addParam( name="lastname", value=ARGUMENTS.lastname)
+        updateQuery.addParam( name="email", value=ARGUMENTS.email)
+        updateQuery.addParam( name="username", value=ARGUMENTS.username)
+        updateQuery.addParam( name="password", value=ARGUMENTS.password)
+        updateQuery.addParam( name="timezone", value=ARGUMENTS.timezone)
+        updateQuery.execute()
+    }
+
     // Get messages
     // NOTE: This query uses an inner join which only gets posts which are associated with
     // users who are also in the user table. Since this database was automatically generated,

@@ -50,7 +50,7 @@
                     <option>MST Mountain</option>
                 </select>
             </div>
-            <button type="button" class="btn btn-primary mt-2" id="editProfileSubmissionButton">Submit</button>
+            <button type="submit" class="btn btn-primary mt-2" id="editProfileSubmissionButton">Submit</button>
         </form>
     </div>
 </div>

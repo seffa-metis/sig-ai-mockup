@@ -28,7 +28,7 @@ component extends="coldbox.system.EventHandler" {
 			var userData = QueryGetRow(userQuery, 1)
 			// save the data for use in the home page
 			// TODO: This doesnt persist if i go to a new handler?
-			prc.userData = "user data here!"
+			// prc.userData = "user data here!"
 			// writeDump(
 			// 	var = prc.userData,
 			// 	output = "console"
