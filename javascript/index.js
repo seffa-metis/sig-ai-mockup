@@ -136,7 +136,7 @@ $(".deleteMessageButton").on("click", (event) => {
 Post a comment
 */
 $(".postComment").on("click", (event) => {
-
+    console.log("CLICKED!")
     // Get all url parameters
     let userID = localStorage.getItem("userID")
     var userDisplayName = $("#username").text().slice(1)

@@ -135,8 +135,8 @@
 
                     <!--- Loop through the query again, and find comments that match this message and create them.--->
                     <cfloop query="#prc.messageData#">
-                        <!--- If this row is a part of the same message, create a comment. --->
-                        <cfif #messageID# == currentMessageID>
+                        <!--- If this row is a part of the same message, create a comment if its not null. --->
+                        <cfif #messageID# == currentMessageID and len(#comment#)>
                             <div class="comment mt-2 p-2" id="commentID#commentid#">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <p class="mb-0">#commentUsername#</p>

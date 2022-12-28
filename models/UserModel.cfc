@@ -1,6 +1,7 @@
 component {
-
-    // Creates a new User
+    /**
+    * Creates a new User
+    */
     public void function createUser(
         required string id,
         required string firstname,
@@ -29,7 +30,9 @@ component {
 		createQuery.execute()
     };
 
-    // Get a user with a given email
+    /**
+    * Get a user with a given email
+    */
     public query function getUserByEmail ( required string email ) {
         var getUserByEmail = new Query();
 		getUserByEmail.setDatasource("CFSQLTraining");
@@ -53,7 +56,9 @@ component {
         return userQueryEmail
     }
 
-    // Get a user with a given id
+    /**
+    * Get a user with a given id
+    */
     public query function getUserByID ( required string id ) {
         var getUserByID = new Query();
 		getUserByID.setDatasource("CFSQLTraining");
@@ -76,7 +81,9 @@ component {
         return userQueryID
     }
 
-    // Update user
+    /**
+    * Update user
+    */
     public void function updateUser (
         required string id,
         required string firstname,
@@ -113,13 +120,17 @@ component {
         updateQuery.execute()
     }
 
-    // Get messages
-    // NOTE: This query uses an inner join which only gets posts which are associated with
-    // users who are also in the user table. Since this database was automatically generated,
-    // there are lots of posts that were generated that do not match a user in the user table.
-    // Since that would never happen in a real application, i am only using posts that are properly
-    // associated with users in the user table ( users created by me, and not auto-generated ).
+    /**
+    * Get messages
+    */
     public query function getMessages() {
+
+        /* NOTE: This query uses an inner join which only gets posts which are associated with
+        users who are also in the user table. Since this database was automatically generated,
+        there are lots of posts that were generated that do not match a user in the user table.
+        Since that would never happen in a real application, i am only using posts that are properly
+        associated with users in the user table ( users created by me, and not auto-generated ).*/
+        
         var getMessages = new Query();
 		getMessages.setDatasource("CFSQLTraining");
 		getMessages.setName("getMessages");
@@ -146,7 +157,9 @@ component {
         return getMessagesQuery
     }
 
-    // Delete a message
+    /**
+    * Delete a message
+    */
     public void function deleteMessage( required string messageID ) {
         var deleteMessageQuery = new Query();
 		deleteMessageQuery.setDatasource("CFSQLTraining");
@@ -161,7 +174,9 @@ component {
         deleteMessageQuery.execute()
     }
     
-    // Delete a Comment
+    /**
+    * Delete a comment
+    */
     public void function deleteComment( required string commentID ) {
         var deleteCommentQuery = new Query();
 		deleteCommentQuery.setDatasource("CFSQLTraining");
@@ -177,7 +192,9 @@ component {
     }
 
 
-    // Post a Comment
+    /**
+    * Post a comment
+    */
     public void function postComment( 
 		required string messageID,
         required string userID,
@@ -186,7 +203,7 @@ component {
     ) {
         var postCommentQuery = new Query();
 		postCommentQuery.setDatasource("CFSQLTraining");
-		postCommentQuery.setName("postCOmment");
+		postCommentQuery.setName("postComment");
         postCommentQuery.setSQL(
             " 
             INSERT INTO [CFSQLTraining].[dbo].[Comments]
@@ -201,7 +218,9 @@ component {
     }
 
 
-    // Post a new message
+    /**
+    * Post a new message
+    */
     public void function postMessage( 
         required string id, 
         required string username, 
@@ -236,13 +255,15 @@ component {
     };
 
     /* 
-    NOTE: About the next three functions. The database we were given should have
+    NOTE: About the next two functions. The database we were given should have
     autoincremented IDs but that was not setup correctly. So for this exercise I am 
     just finding the highest id that is in there and adding +1 to it so I can insert data
     which requires IDs.
     */ 
 
-    // Gets the row with the highest id so we can generate a new ID
+    /**
+    * Gets the row with the highest user id so we can generate a new ID
+    */
     public query function getHighestUserID () {
         var getHighestUserID = new Query();
 		getHighestUserID.setDatasource("CFSQLTraining");
@@ -258,7 +279,9 @@ component {
         return idQuery
     }
 
-    // Gets the row with the highest id so we can generate a new ID
+    /**
+    * Gets the row with the highest message id so we can generate a new ID
+    */
     public query function getHighestMessageID () {
         var getHighestMessageID = new Query();
 		getHighestMessageID.setDatasource("CFSQLTraining");
@@ -273,7 +296,4 @@ component {
         var idQuery = getHighestMessageID.execute().getResult()
         return idQuery
     }
-
-
-
 }

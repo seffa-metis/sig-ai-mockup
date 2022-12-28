@@ -19,36 +19,29 @@ component extends="coldbox.system.EventHandler" {
 
 		// if a user with that email was not found, return 403
 		if (queryRecordCount(userQuery) == 0) {
-    		// TODO: How do i return 403 user already exists
 			event.renderData( type="json", data={"Error": "User with this email was not found."}, statusCode=403 );
-			event.setView("main/index");
+			return
+        } 
 
-		// A user with that email was found
-        } else {
-			var userData = QueryGetRow(userQuery, 1)
-			// save the data for use in the home page
-			// TODO: This doesnt persist if i go to a new handler?
-			// prc.userData = "user data here!"
-			// writeDump(
-			// 	var = prc.userData,
-			// 	output = "console"
-			// );
+		// A user with that email was found, so get his data
+		var userData = QueryGetRow(userQuery, 1)
 
-			// check if the passwords match
-			if (rc.password != userData['password']) {
-				event.renderData( type="json", data={"Error": "Password does not match this email."}, statusCode=404 );
-			} else {
-				// SIGN IN SUCCESSFULL
-				// else we relocate to the home page
-				// event.setView( "main/index2" );
-				// TODO: WHY DOESNT THIS DO ANYTHING????
-				// event.setView("homePage/index");
-				// jquery 
-				// event.nolayout()
-				// relocate( "HomePage" );
-				return userData["id"]
-			}
-        }
+
+		// check if the passwords match
+		if (rc.password != userData['password']) {
+			event.renderData( type="json", data={"Error": "Password does not match this email."}, statusCode=404 );
+			return
+		} 
+
+		// User sign in is successful, redirect to the home page
+
+		/* 
+		TODO: WHY DOESNT THIS DO ANYTHING????
+		event.setView("homePage/index");
+		relocate( "HomePage" );
+		*/
+
+		return userData["id"] 
 	}
 
 	/**
@@ -59,30 +52,27 @@ component extends="coldbox.system.EventHandler" {
 		// check if a user with that email exists
 		var userQuery = userModel.getUserByEmail( rc.email )
 
-		// if a user with that email was not found, create the user
-		if (queryRecordCount(userQuery) == 0) {
-
-			// Get the highest id that already exists ( assuming at least one entry exists )
-			// TODO: We would need to check that the record set has at least one row
-			var highestIDquery = userModel.getHighestUserID()
-			var highestID = QueryGetRow(highestIDquery, 1)
-			var id = LSParseNumber(highestID['id']) + 1
-			
-			// Create the user
-			userModel.createUser(
-				id = id,
-				firstname = rc.firstname,
-				lastname = rc.lastname,
-				username = rc.username,
-				email = rc.email,
-				password = rc.password,
-				timezone = rc.timezone
-			)
-
-		// A user with that email already exists
-        } else {
+		// if a user with that email already exists, return an error
+		if (userQuery.recordcount != 0) {
 			event.renderData( type="json", data={"Error": "User already exist"}, statusCode=403 );
-        }
+			}
+
+		// NOTE: This should never happen in prod as or db should have autoincrimenting id's
+		// Get the highest id that already exists ( assuming at least one entry exists )
+		var highestIDquery = userModel.getHighestUserID()
+		var highestID = QueryGetRow(highestIDquery, 1)
+		var id = LSParseNumber(highestID['id']) + 1
+		
+		// Create the user
+		userModel.createUser(
+			id = id,
+			firstname = rc.firstname,
+			lastname = rc.lastname,
+			username = rc.username,
+			email = rc.email,
+			password = rc.password,
+			timezone = rc.timezone
+		)
 		event.setView("main/index");
 	}
 
