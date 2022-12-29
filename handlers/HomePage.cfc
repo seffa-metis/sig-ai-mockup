@@ -33,15 +33,30 @@ component{
 			// Get and save the message data to the prc
 			prc.messageData = wirebox.getInstance( "userModel" ).getMessages();
 
-			// Add a flag to each message if it belongs to the signed in user so they can delete it
-			// TODO: This doesnt work, is it possible to add new data into a query result like this?
-			// for (var message in prc.messageData) {
-			// 	if (message["id"] == prc.userData["id"]) {
-			// 		message["isDeletable"] = true
-			// 	} else {
-			// 		message["isDeletable"] = false
-			// 	}
-			// }
+			// TODO: Is it possible to add a new column to a record set manually?
+			//  -- such as doing some logic and adding a new flag for the view to use?
+
+			/*
+			 Get all comments for each messages and store in a struct: 
+			{ 
+				messageID_1: { QUERY },
+				messageID_2: { QUERY },
+				.....
+				messageID_10: { QUERY }
+			}
+			*/
+			var commentsForEachMessage = StructNew()
+			for (var message in prc.messageData) {
+
+				// Retrieve and store the comments
+				var messageID = message["messageID"]
+				var comments = wirebox.getInstance( "userModel" ).getComments( messageID=messageID );
+				commentsForEachMessage[messageID] = comments
+			}
+			
+			writeDump(commentsForEachMessage)
+			prc.comments = commentsForEachMessage
+
 
 			event.setView( "HomePage/index" );
 			event.setLayout("Home")

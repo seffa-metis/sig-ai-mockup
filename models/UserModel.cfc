@@ -125,11 +125,13 @@ component {
     */
     public query function getMessages() {
 
-        /* NOTE: This query uses an inner join which only gets posts which are associated with
+        /* 
+        NOTE: This query uses an inner join which only gets posts which are associated with
         users who are also in the user table. Since this database was automatically generated,
         there are lots of posts that were generated that do not match a user in the user table.
         Since that would never happen in a real application, i am only using posts that are properly
-        associated with users in the user table ( users created by me, and not auto-generated ).*/
+        associated with users in the user table ( users created by me, and not auto-generated ).
+        */
         
         var getMessages = new Query();
 		getMessages.setDatasource("CFSQLTraining");
@@ -137,24 +139,44 @@ component {
         getMessages.setSQL(
             " 
             SELECT TOP 10
-                fm.username as messageUsername, 
+                fm.username, 
                 fm.characters as message, 
-                fm.timestap as messageDate, 
-                u.id as messageUserID,
-                fm.id as messageID,
-                c.comment,
-                c.date as commentDate,
-                c.userid as commentUserID,
-                c.userdisplayname as commentUsername,
-                c.commentid
+                fm.timestap, 
+                u.id as userID,
+                fm.id as messageID
             FROM CFSQLTraining.dbo.fizzlemessages fm
             INNER JOIN fizzleusers u ON fm.username = u.username
-            LEFT JOIN Comments c ON c.postid = fm.id
-            ORDER BY messageID DESC, commentDate DESC;
+            ORDER BY timestap DESC;
             " 
         )
         var getMessagesQuery = getMessages.execute().getResult()
         return getMessagesQuery
+    }
+
+    /**
+    * Get comments for a message
+    */
+    public query function getComments( required string messageID ) {
+        var getCommentsQuery = new Query();
+        getCommentsQuery.setDatasource("CFSQLTraining");
+        getCommentsQuery.setName("getComments");
+        getCommentsQuery.setSQL(
+            " 
+            SELECT
+                commentid, 
+                postid, 
+                userid as commentUserID, 
+                date,
+                comment,
+                userdisplayname
+            FROM CFSQLTraining.dbo.Comments
+            WHERE postid = ( :messageID )
+            ORDER BY date DESC;
+            " 
+        )
+        getCommentsQuery.addParam( name="messageID", value=ARGUMENTS.messageID)
+        var comments = getCommentsQuery.execute().getResult()
+        return comments
     }
 
     /**
