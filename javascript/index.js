@@ -1,12 +1,12 @@
 $( document ).ready(function() {
 
 
-/*
-Sign-in form submission
+/**
+* Sign-in form submission
 */
 $("#signIn_form").on("submit", (event) => {
 
-    // TODO: not sure why things are getting submnitted twice when I dont have these?
+    // We could change the button to type="button" to prevent the automatic submission but this works
     event.preventDefault();
     event.stopImmediatePropagation();
 
@@ -18,31 +18,30 @@ $("#signIn_form").on("submit", (event) => {
             "email": $("#signIn_form_email").val(),
             "password": $("#signIn_form_password").val(),
         }),
-        success: function( userID ) { 
+        success: function( userID ) {
             // Redirect to the home page
-            alert( "Sign in successful for user with id " + userID ) 
             localStorage.setItem("userID", userID)
             const url = "http://127.0.0.1:55968/HomePage/index?userID=" + userID
             $(location).attr('href',url);
         },
         error: function(jqXHR) {
-
-            // TODO: Is this the correct way to handle error responses?
             if (jqXHR.status == 403) {
                 alert( "A user with this email does not exist." ) 
             } else if (jqXHR.status == 404) {
-                alert("This email was found but the password did not match.")
+                alert( "This email was found but the password did not match." )
+            } else {
+                alert( "There was an unknown error signing in." )
             }
         },
     })
 })
 
-/*
-Sign-up form submission
+/**
+* Sign-up form submission
 */
 $("#signUp_form").on("submit", (event) => {
 
-    // TODO: not sure why things are getting submnitted twice when I dont have these?
+    // We could change the button to type="button" to prevent the automatic submission but this works
     event.preventDefault();
     event.stopImmediatePropagation();
 
@@ -58,30 +57,36 @@ $("#signUp_form").on("submit", (event) => {
             "lastname": $("#signUp_form_lastname").val(),
             "timezone": $("#signUp_form_timezone").val(),
         }),
-        success: function() { alert( "User was created. Please sign in." ) },
+        success: function() { 
+            alert( "User was created. Please sign in." )
+            location.reload()
+        },
         error: function(jqXHR) {
-
-            // TODO: Is this the correct way to handle error responses?
             if (jqXHR.status == 403) {
                 alert( "A user with this email already exists! " ) 
+            } else if (jqXHR.status == 404) {
+                alert( "Password cannot be blank!" ) 
+            } else {
+                alert( "There was an unknown error creating this account." )
             }
-        },
+        }
     })
 })
 
-/* 
-Message submission
+/**
+* Message submission
 */
 $("#sendMessage").on("click", () => {
 
     let userID = localStorage.getItem("userID")
     var username = $("#username").text().slice(1)
-    console.log(username)
-
-    // TODO: check that the message has text in it
     let message = $("#messageEntryArea").val()
 
-    // if it does call the handler
+    if (!message) {
+        alert("Message cannot be empty.")
+        return
+    }
+
     $.ajax({
         url: "http://127.0.0.1:55968/HomePage/postMessage?userID=" + String(userID) + "&username=" + username,
         type: "post",
@@ -94,17 +99,13 @@ $("#sendMessage").on("click", () => {
             location.reload();
         },
         error: function(jqXHR) {
-            if (jqXHR.status == 403) {
-                alert( " tough luck your message couldnt be posted " ) 
-            } else {
-                alert( "there was an unknown error posting this message." )
-            }
-        },
+                alert( " Message couldnt be posted " ) 
+        }
     })
 })
 
-/* 
-Delete a message
+/**
+* Delete a message
 */
 $(".deleteMessageButton").on("click", (event) => {
 
@@ -117,7 +118,6 @@ $(".deleteMessageButton").on("click", (event) => {
 
     let userID = localStorage.getItem("userID")
 
-     // if it does call the handler
      $.ajax({
         url: "http://127.0.0.1:55968/HomePage/deleteMessage?userID=" + String(userID) + "&messageID=" + String(messageID),
         type: "post",
@@ -127,24 +127,23 @@ $(".deleteMessageButton").on("click", (event) => {
         },
         error: function(jqXHR) {
             alert("Message could not be deleted.")
-        },
+        }
     })
-
 })
 
-/* 
-Post a comment
+/**
+* Post a comment
 */
 $(".postComment").on("click", (event) => {
+   
     // Get all url parameters
     let userID = localStorage.getItem("userID")
     var userDisplayName = $("#username").text().slice(1)
+    let comment = $(event.currentTarget).parent().find(".commentEntryArea").val()
+   
     // The id is parsed from the id of the message container which is "messageID<id>"
     var messageID = $(event.currentTarget).closest(".messageContainer").attr("id").substring(9)
 
-    let comment = $(event.currentTarget).parent().find(".commentEntryArea").val()
-
-    // if it does call the handler
     $.ajax({
         url: "http://127.0.0.1:55968/HomePage/postComment?userID=" + String(userID) + "&userDisplayName=" + userDisplayName + "&messageID=" + messageID,
         type: "post",
@@ -153,17 +152,16 @@ $(".postComment").on("click", (event) => {
             "comment": comment,
         }),
         success: function() { 
-            // alert("Comment successfully posted!")
             location.reload();
         },
         error: function(jqXHR) {
             alert("Comment was not able to be posted!")
-        },
+        }
     })
 })
 
-/* 
-Delete a comment
+/** 
+* Delete a comment
 */
 $(".deleteCommentButton").on("click", (event) => {
 
@@ -176,7 +174,6 @@ $(".deleteCommentButton").on("click", (event) => {
  
     let userID = localStorage.getItem("userID")
 
-     // if it does call the handler
      $.ajax({
         url: "http://127.0.0.1:55968/HomePage/deleteComment?userID=" + String(userID) + "&commentID=" + String(commentID),
         type: "post",
@@ -186,16 +183,14 @@ $(".deleteCommentButton").on("click", (event) => {
         },
         error: function(jqXHR) {
             alert("Comment could not be deleted.")
-        },
+        }
     })
 })
 
-/* 
-Update profile information
+/** 
+* Update profile information
 */
 $("#editProfileSubmissionButton").on("click", (event)=> {
-    event.preventDefault();
-    event.stopImmediatePropagation();
 
     let userID = localStorage.getItem("userID")
 
@@ -217,19 +212,20 @@ $("#editProfileSubmissionButton").on("click", (event)=> {
         },
         error: function(jqXHR) {
 
-            // TODO: Is this the correct way to handle error responses?
             if (jqXHR.status == 403) {
                 alert( "A user with this email already exists! " ) 
+            } else if (jqXHR.status == 404) {
+                alert( "Password cannot be blank." )
             } else {
                 alert( "Something else went wrong when updated user info. ")
             }
-        },
+        }
     })
 })
 
 
-/*
-The following functions toggle elements on and off
+/**
+* The following functions toggle elements on and off
 */
 
 // Sign in form animations
@@ -269,17 +265,19 @@ $("#editProfileToggler").on("click", () => {
         type: "post",
         contentType: "application/json",
         success: function( userData ) { 
+
             // populates the table with the user's current information
             $("#editProfileForm_firstname").val(userData["FIRSTNAME"])
             $("#editProfileForm_lastname").val(userData["LASTNAME"])
             $("#editProfileForm_username").val(userData["USERNAME"])
             $("#editProfileForm_email").val(userData["EMAIL"])
             $("#editProfileForm_timezone").val(userData["TIMEZONE"])
+            $("#editProfileForm_password").val(userData["PASSWORD"])
             $(".editProfileContainer").slideToggle()
         },
         error: function(jqXHR) {
             alert("User info could not be retrieved.")
-        },
+        }
     }) 
 })
 

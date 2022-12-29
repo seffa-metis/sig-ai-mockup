@@ -17,7 +17,7 @@
 </div>
 
 <!---Edit Profile form, hidden by default --->
-<div class="container-fluid p-3 editProfileContainer mt-1" style="display: none">
+<div class="container-fluid p-3 editProfileContainer background_accent mt-1" style="display: none">
     <div class="container">
         <h3>Edit Profile</h3>
         <form id="editProfileForm">
@@ -50,90 +50,101 @@
                     <option>MST Mountain</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary mt-2" id="editProfileSubmissionButton">Submit</button>
+            <button type="button" class="btn btn-primary mt-2" id="editProfileSubmissionButton">Submit</button>
         </form>
     </div>
 </div>
 
 <!--- Message entry container --->
 <div class="container-fluid bg-info mt-1">
-    <form>
-        <div class="form-group">
-            <textarea 
-                class="form-control textAreaNoStyling text-dark" 
-                id="messageEntryArea" 
-                rows="3"
-                maxLength="140"
-                placeholder="Let people know what you want to say!"
-            ></textarea>
-        </div>
-    </form>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <textarea 
+                    class="form-control textAreaNoStyling text-dark backgound_transparent form_noStyling placeholder_accentLight" 
+                    id="messageEntryArea" 
+                    rows="3"
+                    maxLength="140"
+                    placeholder="Let people know what you want to say!"
+                ></textarea>
+            </div>
+        </form>
+    </div>
 </div>
 
-<!--- Message submission --->
+<!--- Message submission button --->
 <div class="container-fluid bg-info mt-1 text-center">
-    <button role="button" class="btn btn-info btn-sm text-dark" id="sendMessage">
+    <button role="button" class="btn btn-info btn-sm " id="sendMessage">
         Send Message
     </button>
 </div>
 
-<!--- Message feed container  --->
+<!--- Generate the messages  --->
 <cfloop query="#prc.messageData#">
 
-    <!---  Message + picture container    --->
-    <div class="container-fluid mt-2 bg-primary d-flex p-2 align-items-start w-100">
-        <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
-        <div class="w-100 messageContainer" style="margin-left: 2rem" id="messageID#messageID#">
-            <div class="d-flex justify-content-between align-items">
-                <p>#username#</p>
-                <p>#timestap#</p>
-            </div>
-            #message#
+    <!---  Background Container    --->
+    <div class="container-fluid bg-primary">
+    
 
-            <!--- Button Options --->
-            <div class="d-flex justify-content-end">
-                <cfif #userID# == #prc.userData.id#> 
-                    <!--- Store the message id so delete button knows which comment to delete. --->
-                    <!--- TODO: This smells really bad. --->
-                    <button  class="btn btn-sm btn-danger deleteMessageButton">Delete Message</button> 
-                </cfif> 
-                <button class="btn btn-sm btn-primary viewComment">View Comments</button>
-                <button class="btn btn-sm btn-primary writeComment">Write Comment</button>
-            </div>
+        <!---  Message + picture container    --->
+        <div class="container mt-1 d-flex p-2 align-items-start w-100">
+            <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
 
-            <!--- Write new comment section, hidden by default, toggled by the 'writeComment' button --->
-            <div id="commentForm" style="display:none">
-                <textarea 
-                    class="form-control text-light mt-2 mb-2 commentEntryArea" 
-                    rows="3"
-                    maxLength="140"
-                    placeholder="Comment something here..."
-                ></textarea>
-                <button type="button" class="btn btn-sm btn-primary d-block postComment" style="margin-left: auto">Post Comment</button>
-            </div>
+            <!--- Message container --->
+            <div class="w-100 messageContainer" style="margin-left: 2rem" id="messageID#messageID#">
+                <div class="d-flex justify-content-between align-items  pb-1 mb-2">
+                    <p class="m-0" style="font-weight: bold">@#username#</p>
+                    <p class="m-0" style="font-weight: bold">#timestap#</p>
+                </div>
+                <div class="messageCharacterContainer">
+                    #message#
+                </div>
+                <!--- Button Options --->
+                <div class="d-flex justify-content-end pt-3 ">
+                    <cfif #userID# == #prc.userData.id#> 
+                        <!--- Store the message id so delete button knows which comment to delete. --->
+                        <!--- TODO: This smells really bad. --->
+                        <button  class="btn btn-sm btn-danger deleteMessageButton">Delete</button> 
+                    </cfif> 
+                    <button class="btn btn-sm btn-primary viewComment">Comments</button>
+                    <button class="btn btn-sm btn-primary writeComment">Reply</button>
+                </div>
 
-            <!--- Generate the comments --->
-            <div class="commentContainer" style="display:none">
-                <cfloop query="#prc.comments["#messageID#"]#">
-                    <cfif len(#comment#)>
-                        <div class="comment mt-2 p-2" id="commentID#commentid#">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <p class="mb-0">#userdisplayname#</p>
-                                <p class="mb-0">#date#</p>
+                <!--- Write new comment section, hidden by default, toggled by the 'writeComment' button --->
+                <div id="commentForm" style="display:none">
+                    <textarea 
+                        class="form-control text-light mt-2 mb-2 commentEntryArea background_accent form_noStyling" 
+                        rows="3"
+                        maxLength="140"
+                        placeholder="Comment something here..."
+                    ></textarea>
+                    <button type="button" class="btn btn-sm btn-primary d-block background_accent postComment" style="margin-left: auto">Post Reply</button>
+                </div>
+
+                <!--- Generate the comments --->
+                <div class="commentContainer" style="display:none">
+                    <cfloop query="#prc.comments["#messageID#"]#">
+                        <cfif len(#comment#)>
+                            <div class="comment background_accent mt-2 p-2" id="commentID#commentid#">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <p class="mb-0" style="font-weight: bold">@#userdisplayname#</p>
+                                    <p class="mb-0" style="font-weight: bold">#date#</p>
+                                </div>
+                                <p class="text-wrap text-break mb-0">#comment#</p>
+                                <cfif #commentUserID# == #prc.userData.id#>
+                                    <button  class="btn btn-sm btn-danger deleteCommentButton d-block" style="margin-left: auto">Delete Comment</button>
+                                </cfif>
                             </div>
-                            <p class="text-wrap text-break mb-0">#comment#</p>
-                            <cfif #commentUserID# == #prc.userData.id#>
-                                <button  class="btn btn-sm btn-danger deleteCommentButton d-block" style="margin-left: auto">Delete Comment</button>
-                            </cfif>
-                        </div>
-                    </cfif>
-                </cfloop> 
-            </div> 
+                        </cfif>
+                    </cfloop> 
+                </div> 
 
+            </div> <!--- Message container --->
+        </div> <!--- Message + picture container --->
+    </div>  <!---  Background Container    --->
 
-        </div> <!--- Message container --->
-    </div> <!--- Message + picture container --->
 </cfloop> <!--- Message loop --->
+
 
 
 </cfoutput>

@@ -2,73 +2,67 @@
     box-sizing: border-box;
 }
 
-/* Images */
+/** 
+* Images 
+*/
 .profilePicture {
     height: 5rem;
     width: 5rem;
 }
 
+@media screen and (max-width: 576px) {
+    .profilePicture {
+        height: 4rem;
+        width: 4rem;
+    }
+}
 
-/* Forms */
-#messageEntryArea {
-    background: transparent;
+
+/** 
+* Forms 
+*/
+.form_noStyling {
     border: none;
     outline: none;
     margin: none;
     padding: none;
 }
 
-.commentEntryArea,
-.commentEntryArea:focus {
+.form_noStyling:focus {
+    box-shadow: none;
+}
+
+
+/**
+* Buttons 
+*/
+.btn:focus,
+.btn:active {
+    outline: none;
+    box-shadow: none;
+}
+
+
+/** 
+* Coloring 
+*/
+.background_accent, 
+.background_accent:focus {
     background: #092ea8;
-    border: none;
-    outline: none;
-    margin: none;
-    padding: none;
 }
 
-.commentEntryArea::placeholder,
-.commentEntryArea:focus {
-    color: white;
+.backgound_transparent, 
+.backgound_transparent:focus {
+    background: transparent;
 }
 
-#messageEntryArea::placeholder {
+.placeholder_accentLight::placeholder {
     color: darkslategrey
 }
 
-
-#messageEntryArea:focus, .commentEntryArea:focus {
-    box-shadow: none;
-}
-
-#sendMessage {
-    color: darkslategray
-}
-
-.btn:focus {
-    outline: none;
-    box-shadow: none;
-}
-
-#sendMessage:active, .postComment:active {
-    box-shadow: none;
-}
-
-.comment {
-    background: #092ea8;
-    color: white;
-}
-
-.postComment {
-    background: #092ea8;
-
-}
-
-.editProfileContainer {
-    background: #092ea8;
-}
-
+.commentEntryArea::placeholder,
+.commentEntryArea:focus,
+.comment,
 .editProfileContainer > * {
     color: white;
 }
-
