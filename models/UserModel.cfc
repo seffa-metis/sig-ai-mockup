@@ -145,10 +145,11 @@ public query function getMessages() {
             fm.characters as message,
             FORMAT ( fm.timestap, 'MM-dd-yy' ) as timestap, 
             u.id as userID,
-            fm.id as messageID
+            fm.id as messageID,
+            u.profilePicture
         FROM CFSQLTraining.dbo.fizzlemessages fm
         INNER JOIN fizzleusers u ON fm.username = u.username
-        ORDER BY timestap DESC;
+        ORDER BY fm.timestap DESC;
         " 
     )
     var getMessagesQuery = getMessages.execute().getResult()
@@ -231,7 +232,7 @@ public void function postComment(
     postCommentQuery.setSQL(
         " 
         INSERT INTO [CFSQLTraining].[dbo].[Comments]
-        VALUES (:messageID, :userID, GETDATE(), :comment,  :userdisplayname) 
+        VALUES (:messageID, :userID, GETDATE(), ( :comment ),  :userdisplayname) 
         " 
     )
     postCommentQuery.addParam( name="messageID", value=ARGUMENTS.messageID)

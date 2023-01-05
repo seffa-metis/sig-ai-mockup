@@ -4,8 +4,8 @@ component extends="coldbox.system.EventHandler" {
 property name="userModel" inject="UserModel";
 
 /**
-	* Sign in / sign up page
-	*/
+* Sign in / sign up page
+*/
 function index( event, rc, prc ) {
 	event.setView("main/index");
 }
@@ -26,7 +26,6 @@ function signIn (event, rc, prc ) {
 	// A user with that email was found, so get his data
 	var userData = QueryGetRow(userQuery, 1)
 
-
 	// check if the passwords match
 	if (rc.password != userData['password']) {
 		event.renderData( type="json", data={"Error": "Password does not match this email."}, statusCode=404 );
@@ -34,14 +33,7 @@ function signIn (event, rc, prc ) {
 	} 
 
 	// User sign in is successful, redirect to the home page
-
-	/* 
-	TODO: WHY DOESNT THIS DO ANYTHING????
-	event.setView("homePage/index");
-	relocate( "HomePage" );
-	*/
-
-	return userData["id"] 
+	return userData["id"]
 }
 
 /**

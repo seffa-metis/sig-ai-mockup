@@ -13,7 +13,6 @@ function index( event, rc, prc ){
 	// lets param a userId in the rc
 	event.paramValue("userID", "")
 
-	// TODO: Why do i need to use this wirebox.getinstace or else it wont find the model?
 	var userQuery = wirebox.getInstance( "userModel" ).getUserByID( id=rc.userID );
 	
 	// save the data to be displayed on the home screen
@@ -21,9 +20,6 @@ function index( event, rc, prc ){
 
 	// Get and save the message data to the prc
 	prc.messageData = wirebox.getInstance( "userModel" ).getMessages();
-
-	// TODO: Is it possible to add a new column to a record set manually?
-	//  -- such as doing some logic and adding a new flag for the view to use?
 	
 	// Get all comments for each messages and store in a struct: 
 	var commentsForEachMessage = StructNew()
@@ -56,9 +52,6 @@ function postMessage( event, rc, prc ){
 	// lets param a userId in the rc
 	event.paramValue("userID", "")
 	event.paramValue("username", "")
-
-	// TODO: How to find the lat and long?
-	// for now just use a static lat and long
 
 	var highestIDquery = wirebox.getInstance( "userModel" ).getHighestMessageID();
 	var highestID = QueryGetRow(highestIDquery, 1)
@@ -174,5 +167,33 @@ function updateUser( event, rc, prc ) {
 	relocate( "HomePage/index?userID=" & rc.userID);
 	event.setLayout("Home")
 }
+
+/**
+* Upload picture
+*/
+function saveProfilePicture( event, rc, prc ){
+	event.paramValue("userID", "")
+	var profilePic = rc.profilePic
+	var destination = expandPath("/includes/images/profilePictures")
+
+
+	var uploadResults = FileUpload(
+		#destination#,
+		"profilePic",
+		"image/png, image/webp, image/jpeg",
+		"MakeUnique"
+	)
+
+	writeDump(uploadResults.serverfile)
+	writeDump(rc.form)
+
+
+	relocate( "HomePage/index?userID=" & rc.userID);
+	event.setLayout("Home")
+}
+
+/**
+* Add picture to user
+*/
 
 }

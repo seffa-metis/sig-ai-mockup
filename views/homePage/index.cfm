@@ -10,6 +10,14 @@
                     <p class="lead" id="username">@#prc.userData.username#</p>
                 </div>
                 <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
+                <form id="edit-pic-form" enctype="multipart/form-data"> 
+                    <div class="form-group">
+                        <label for="profilePic">Profile Picture</label>
+                        <input type="file" name='profilePic' accept="image/jpeg, image/png" id="profilePic">
+                        <p class="help-block">Only accepts .png or .jpeg</p>
+                    </div>
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </form>
             </div>
             
         </div>

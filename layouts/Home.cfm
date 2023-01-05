@@ -51,7 +51,7 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item">
-        					<a class="nav-link" href="##">Sign Out</a>
+        					<button class="nav-link" id="signOutButton">Sign Out</button>
       					</li>
 						<li class="nav-item">
         					<a role="button" class="nav-link" id="editProfileToggler">Edit Profile</a>

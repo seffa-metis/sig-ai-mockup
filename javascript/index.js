@@ -11,7 +11,7 @@ $("#signIn_form").on("submit", (event) => {
     event.stopImmediatePropagation();
 
     $.ajax({
-        url: "http://127.0.0.1:55968/Main/signIn",
+        url: "/Main/signIn",
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
@@ -21,7 +21,7 @@ $("#signIn_form").on("submit", (event) => {
         success: function( userID ) {
             // Redirect to the home page
             localStorage.setItem("userID", userID)
-            const url = "http://127.0.0.1:55968/HomePage/index?userID=" + userID
+            const url = "/HomePage/index?userID=" + userID
             $(location).attr('href',url);
         },
         error: function(jqXHR) {
@@ -46,7 +46,7 @@ $("#signUp_form").on("submit", (event) => {
     event.stopImmediatePropagation();
 
     $.ajax({
-        url: "http://127.0.0.1:55968/Main/createUser",
+        url: "/Main/createUser",
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
@@ -88,7 +88,7 @@ $("#sendMessage").on("click", () => {
     }
 
     $.ajax({
-        url: "http://127.0.0.1:55968/HomePage/postMessage?userID=" + String(userID) + "&username=" + username,
+        url: "/HomePage/postMessage?userID=" + String(userID) + "&username=" + username,
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
@@ -119,7 +119,7 @@ $(".deleteMessageButton").on("click", (event) => {
     let userID = localStorage.getItem("userID")
 
      $.ajax({
-        url: "http://127.0.0.1:55968/HomePage/deleteMessage?userID=" + String(userID) + "&messageID=" + String(messageID),
+        url: "/HomePage/deleteMessage?userID=" + String(userID) + "&messageID=" + String(messageID),
         type: "post",
         contentType: "application/json",
         success: function() { 
@@ -145,7 +145,7 @@ $(".postComment").on("click", (event) => {
     var messageID = $(event.currentTarget).closest(".messageContainer").attr("id").substring(9)
 
     $.ajax({
-        url: "http://127.0.0.1:55968/HomePage/postComment?userID=" + String(userID) + "&userDisplayName=" + userDisplayName + "&messageID=" + messageID,
+        url: "/HomePage/postComment?userID=" + String(userID) + "&userDisplayName=" + userDisplayName + "&messageID=" + messageID,
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
@@ -175,7 +175,7 @@ $(".deleteCommentButton").on("click", (event) => {
     let userID = localStorage.getItem("userID")
 
      $.ajax({
-        url: "http://127.0.0.1:55968/HomePage/deleteComment?userID=" + String(userID) + "&commentID=" + String(commentID),
+        url: "/HomePage/deleteComment?userID=" + String(userID) + "&commentID=" + String(commentID),
         type: "post",
         contentType: "application/json",
         success: function() { 
@@ -195,7 +195,7 @@ $("#editProfileSubmissionButton").on("click", (event)=> {
     let userID = localStorage.getItem("userID")
 
     $.ajax({
-        url: "http://127.0.0.1:55968/HomePage/updateUser?userID=" + String(userID),
+        url: "/HomePage/updateUser?userID=" + String(userID),
         type: "post",
         contentType: "application/json",
         data: JSON.stringify({
@@ -219,6 +219,41 @@ $("#editProfileSubmissionButton").on("click", (event)=> {
             } else {
                 alert( "Something else went wrong when updated user info. ")
             }
+        }
+    })
+})
+
+/** 
+* Sign out
+*/
+$("#signOutButton").on("click", () => {
+    window.localStorage.clear()
+    $(location).attr('href', "/");
+})
+
+/** 
+* Upload photo
+*/
+$("#edit-pic-form").on("submit", (e) => {
+    e.preventDefault();
+    let userID = localStorage.getItem("userID")
+    console.log($("#edit-pic-form")[0])
+
+    const form = new FormData($("#edit-pic-form")[0]);
+    
+    $.ajax({
+        type: "POST",
+        url:"/HomePage/saveProfilePicture?userID=" + String(userID),
+        data: form,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        success: function(  ) { 
+            alert( "Profile picture updated!" ) 
+            location.reload();
+        },
+        error: function(jqXHR) {
+            alert( "Could not upload photo ")
         }
     })
 })
@@ -261,7 +296,7 @@ $("#editProfileToggler").on("click", () => {
     let userID = localStorage.getItem("userID")
 
     $.ajax({
-        url: "http://127.0.0.1:55968/HomePage/getUserByID?userID=" + String(userID),
+        url: "/HomePage/getUserByID?userID=" + String(userID),
         type: "post",
         contentType: "application/json",
         success: function( userData ) { 
