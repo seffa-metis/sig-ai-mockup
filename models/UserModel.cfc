@@ -47,7 +47,8 @@ public query function getUserByEmail ( required string email ) {
             [email],
             [username],
             [password],
-            [timezone]
+            [timezone],
+            [profilePicture]
         FROM [CFSQLTraining].[dbo].[fizzleusers]
         WHERE [email] = :email ;
         " 
@@ -73,7 +74,8 @@ public query function getUserByID ( required string id ) {
             [email],
             [username],
             [timezone],
-            [password]
+            [password],
+            [profilePicture]
         FROM [CFSQLTraining].[dbo].[fizzleusers]
         WHERE [id] = :id ;
         " 
@@ -120,6 +122,29 @@ public void function updateUser (
     updateQuery.addParam( name="password", value=ARGUMENTS.password)
     updateQuery.addParam( name="timezone", value=ARGUMENTS.timezone)
     updateQuery.execute()
+}
+
+/**
+* Update Profile Picture
+*/
+public void function updateProfilePicture (
+    required string id,
+    required string pictureLocation
+) {
+    var updateProfilePictureQuery = new Query();
+    updateProfilePictureQuery.setDatasource("CFSQLTraining");
+    updateProfilePictureQuery.setName("updateProfilePicture");
+    updateProfilePictureQuery.setSQL(
+        " 
+        UPDATE [CFSQLTraining].[dbo].[fizzleusers]
+        SET 
+        profilePicture = ( :pictureLocation )
+        WHERE id = ( :id )
+        " 
+    )
+    updateProfilePictureQuery.addParam( name="pictureLocation", value=ARGUMENTS.pictureLocation)
+    updateProfilePictureQuery.addParam( name="id", value=ARGUMENTS.id)
+    updateProfilePictureQuery.execute()
 }
 
 /**
@@ -278,6 +303,9 @@ public void function postMessage(
     postMessage.addParam( name="longitude", value=ARGUMENTS.longitude)
     postMessage.execute()
 };
+
+
+
 
 /* 
 NOTE: About the next two functions. The database we were given should have

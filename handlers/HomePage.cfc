@@ -164,6 +164,8 @@ function updateUser( event, rc, prc ) {
 		timezone=rc.timezone
 	)
 
+	
+
 	relocate( "HomePage/index?userID=" & rc.userID);
 	event.setLayout("Home")
 }
@@ -183,17 +185,12 @@ function saveProfilePicture( event, rc, prc ){
 		"image/png, image/webp, image/jpeg",
 		"MakeUnique"
 	)
+	
+	// Add file path to the user in the db
+	wirebox.getInstance( "userModel" ).updateProfilePicture( rc.userID, uploadResults.serverfile)
+	event.renderData( type="json", data={"Message": "Picture upload completed successfully"}, statusCode=200)
+	return
 
-	writeDump(uploadResults.serverfile)
-	writeDump(rc.form)
-
-
-	relocate( "HomePage/index?userID=" & rc.userID);
-	event.setLayout("Home")
 }
-
-/**
-* Add picture to user
-*/
 
 }

@@ -9,7 +9,7 @@
                     <h1 class="display-4 ">#prc.userData.firstname#  #prc.userData.lastname#</h1>
                     <p class="lead" id="username">@#prc.userData.username#</p>
                 </div>
-                <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
+                <img src="/includes/images/profilePictures/#prc.userData.profilePicture#" class="rounded-circle profilePicture" alt="Profile Picture"> 
                 <form id="edit-pic-form" enctype="multipart/form-data"> 
                     <div class="form-group">
                         <label for="profilePic">Profile Picture</label>

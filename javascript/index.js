@@ -252,7 +252,7 @@ $("#edit-pic-form").on("submit", (e) => {
             alert( "Profile picture updated!" ) 
             location.reload();
         },
-        error: function(jqXHR) {
+        error: function() {
             alert( "Could not upload photo ")
         }
     })
