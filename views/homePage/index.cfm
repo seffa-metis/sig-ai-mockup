@@ -9,7 +9,11 @@
                     <h1 class="display-4 ">#prc.userData.firstname#  #prc.userData.lastname#</h1>
                     <p class="lead" id="username">@#prc.userData.username#</p>
                 </div>
-                <img src="/includes/images/profilePictures/#prc.userData.profilePicture#" class="rounded-circle profilePicture" alt="Profile Picture"> 
+                <cfif !len(#prc.userData.profilePicture#)>
+                    <img src="/includes/images/default.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
+                <cfelse>
+                    <img src="/includes/images/profilePictures/#prc.userData.profilePicture#" class="rounded-circle profilePicture" alt="Profile Picture"> 
+                </cfif>
                 <form id="edit-pic-form" enctype="multipart/form-data"> 
                     <div class="form-group">
                         <label for="profilePic">Profile Picture</label>
@@ -94,10 +98,14 @@
     <div class="container-fluid bg-primary">
     
 
-        <!---  Message + picture container    --->
+        <!---  Profile picture container    --->
         <div class="container mt-1 d-flex p-2 align-items-start w-100">
-            <img src="/includes/images/profilePic.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
-
+            <cfif !len(#prc.messageData.profilePicture#)>
+                <img src="/includes/images/default.jpg" class="rounded-circle profilePicture" alt="Profile Picture"> 
+            <cfelse>
+                <img src="/includes/images/profilePictures/#prc.messageData.profilePicture#" class="rounded-circle profilePicture" alt="Profile Picture"> 
+            </cfif>
+            
             <!--- Message container --->
             <div class="w-100 messageContainer" style="margin-left: 2rem" id="messageID#messageID#">
                 <div class="d-flex justify-content-between align-items  pb-1 mb-2">

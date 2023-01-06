@@ -241,7 +241,6 @@ public void function deleteComment( required string commentID ) {
     deleteCommentQuery.execute()
 }
 
-
 /**
 * Post a comment
 */
@@ -266,7 +265,6 @@ public void function postComment(
     postCommentQuery.addParam( name="userdisplayname", value=ARGUMENTS.userdisplayname)
     postCommentQuery.execute()
 }
-
 
 /**
 * Post a new message
@@ -303,9 +301,6 @@ public void function postMessage(
     postMessage.addParam( name="longitude", value=ARGUMENTS.longitude)
     postMessage.execute()
 };
-
-
-
 
 /* 
 NOTE: About the next two functions. The database we were given should have
