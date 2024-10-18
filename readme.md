@@ -12,6 +12,3 @@ This will setup all the needed dependencies for each application template.  You 
 ```bash
 box server start
 ```
-
-And run the application.
----
